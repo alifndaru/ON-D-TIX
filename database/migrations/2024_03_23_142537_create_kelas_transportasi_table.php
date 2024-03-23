@@ -13,9 +13,9 @@ class CreateKelasTransportasiTable extends Migration
      */
     public function up()
     {
-        Schema::create('kelas_transportasi', function (Blueprint $table) {
+        Schema::create('kelas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kelas');
+            $table->string('name');
             $table->timestamps();
         });
     }

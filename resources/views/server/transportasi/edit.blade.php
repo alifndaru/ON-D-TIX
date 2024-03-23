@@ -103,6 +103,25 @@
             @endforeach
           </select>
         </div>
+
+        <label for="kelas_id">Class</label><br>
+        <select
+          class="select2 form-control"
+          id="kelas_id"
+          name="kelas_id"
+          required
+          style="width: 100%; color: #6e707e;"
+        >
+          <option value="" disabled>-- Pilih Class --</option>
+          @foreach ($kelas as $data)
+            <option value="{{ $data->id }}"
+              @if ($data->id == $transportasi->kelas_id)
+                selected
+              @endif
+            >{{ $data->name }}</option>
+          @endforeach
+        </select>
+      </div>
       </div>
       <div class="card-footer">
         <a href="{{ route('transportasi.index') }}" class="btn btn-warning mr-2">Kembali</a>

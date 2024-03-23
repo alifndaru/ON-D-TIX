@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Kelas;
 use App\Models\Transportasi;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,9 @@ class TransportasiController extends Controller
     public function index()
     {
         $category = Category::orderBy('name')->get();
-        $transportasi = Transportasi::with('category')->orderBy('kode')->orderBy('name')->get();
-        return view('server.transportasi.index', compact('category', 'transportasi'));
+        $kelas = Kelas::orderBy('name')->get();
+        $transportasi = Transportasi::with('category')->with('kelas')->orderBy('kode')->orderBy('name')->get();
+        return view('server.transportasi.index', compact('category', 'transportasi', 'kelas'));
     }
 
     /**
@@ -42,7 +44,8 @@ class TransportasiController extends Controller
             'name' => 'required',
             'kode' => 'required',
             'jumlah' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'kelas_id' => 'required'
         ]);
 
         Transportasi::updateOrCreate(
@@ -54,6 +57,7 @@ class TransportasiController extends Controller
                 'kode' => strtoupper($request->kode),
                 'jumlah' => $request->jumlah,
                 'category_id' => $request->category_id,
+                'kelas_id' => $request->kelas_id,
             ]
         );
 
@@ -84,8 +88,9 @@ class TransportasiController extends Controller
     public function edit($id)
     {
         $category = Category::orderBy('name')->get();
+        $kelas = Kelas::orderBy('name')->get();
         $transportasi = Transportasi::find($id);
-        return view('server.transportasi.edit', compact('category', 'transportasi'));
+        return view('server.transportasi.edit', compact('category', 'transportasi', 'kelas'));
     }
 
     /**
