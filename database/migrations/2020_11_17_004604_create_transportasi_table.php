@@ -20,8 +20,6 @@ class CreateTransportasiTable extends Migration
             $table->integer('jumlah');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
-
-            $table->foreign('category_id')->references('id')->on('category');
         });
     }
 

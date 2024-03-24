@@ -22,8 +22,6 @@ class CreateRuteTable extends Migration
             $table->time('jam');
             $table->unsignedBigInteger('transportasi_id');
             $table->timestamps();
-
-            $table->foreign('transportasi_id')->references('id')->on('transportasi');
         });
     }
 

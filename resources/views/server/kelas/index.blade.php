@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('title', 'Category')
-@section('heading', 'Category')
+@section('title', 'kelas')
+@section('heading', 'kelas')
 @section('styles')
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
 @endsection
@@ -23,12 +23,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($category as $data)
+                        @foreach ($kelasTransport as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>
-                                    <form action="{{ route('category.destroy', $data->id) }}" method="POST">
+                                    <form action="{{ route('kelas.destroy', $data->id) }}" method="POST">
                                         @csrf
                                         @method('delete')
                                         <a href="javascript:void()" class="btn btn-warning btn-sm btn-circle btn-edit"
@@ -47,19 +47,19 @@
             </div>
         </div>
     </div>
-    <!-- Add Modal -->
+
     <!-- Add Modal -->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Category</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah kelas</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="modalForm" action="{{ route('category.store') }}" method="POST">
+                <form id="modalForm" action="{{ route('kelas.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="_method" id="formMethod">
                     <div class="modal-body">
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Name Category" required />
+                                placeholder="Name kelas" required />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -80,6 +80,9 @@
             </div>
         </div>
     </div>
+
+
+
 @endsection
 @section('script')
     <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
@@ -91,26 +94,24 @@
 
         $(".btn-add").click(function() {
             $("#modal").modal("show");
-            $(".modal-title").html("Tambah Category");
-            $("#modalForm").attr("action", "{{ route('category.store') }}");
+            $(".modal-title").html("Tambah kelas");
+            $("#modalForm").attr("action", "{{ route('kelas.store') }}");
             $("#formMethod").val("");
             $("#id").val("");
             $("#name").val("");
             $("#submitButton").html("Tambah");
-
         });
 
         $("#dataTable").on("click", ".btn-edit", function() {
             let id = $(this).data("id");
             let name = $(this).data("name");
             $("#modal").modal("show");
-            $(".modal-title").html("Edit Category");
-            $("#modalForm").attr("action", "{{ route('category.update', '') }}/" + id);
+            $(".modal-title").html("Edit kelas");
+            $("#modalForm").attr("action", "{{ route('kelas.update', '') }}/" + id);
             $("#formMethod").val("PUT");
             $("#id").val(id);
             $("#name").val(name);
             $("#submitButton").html("Update");
-
         });
     </script>
 @endsection

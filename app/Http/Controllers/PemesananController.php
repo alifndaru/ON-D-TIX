@@ -106,14 +106,18 @@ class PemesananController extends Controller
     public function show($id, $data)
     {
         $data = Crypt::decrypt($data);
-        $category = Category::find($data['category']);
+        $category = Category::findorfail($data['category']);
         $rute = Rute::with('transportasi')->where('start', $data['start'])->where('end', $data['end'])->get();
+        $dataRute = [];
         if ($rute->count() > 0) {
             foreach ($rute as $val) {
+
                 $pemesanan = Pemesanan::where('rute_id', $val->id)->where('waktu')->count();
                 if ($val->transportasi) {
+                    // dd($val->transportasi->category_id);
                     $kursi = Transportasi::find($val->transportasi_id)->jumlah - $pemesanan;
                     if ($val->transportasi->category_id == $category->id) {
+                        // dd($val->transportasi->category_id == $category->id);
                         $dataRute[] = [
                             'harga' => $val->harga,
                             'start' => $val->start,
@@ -128,7 +132,10 @@ class PemesananController extends Controller
                     }
                 }
             }
-            sort($dataRute);
+            if (!empty($dataRute)) {
+                sort($dataRute);
+            }
+            // sort($dataRute);
         } else {
             $dataRute = [];
         }

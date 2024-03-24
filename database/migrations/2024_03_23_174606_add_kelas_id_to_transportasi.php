@@ -15,7 +15,6 @@ class AddKelasIdToTransportasi extends Migration
     {
         Schema::table('transportasi', function (Blueprint $table) {
             $table->unsignedBigInteger('kelas_id');
-            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

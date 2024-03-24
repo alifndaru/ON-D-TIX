@@ -41,29 +41,29 @@ class CategoryController extends Controller
             'name' => 'required'
         ]);
 
-        Category::updateOrCreate(
-            [
-                'id' => $request->id
-            ],
-            [
-                'name' => $request->name,
-                'slug' => strtolower(Str::slug($request->name))
-            ]
-        );
+        Category::create([
+            'name' => strtoupper($request->get('name')),
+            'slug' => strtolower(Str::slug($request->name))
+        ]);
 
-        if ($request->id) {
-            return redirect()->route('category.index')->with('success', 'Success Update Category!');
-        } else {
-            return redirect()->back()->with('success', 'Success Add Category!');
-        }
+        return redirect()->back()->with('success', 'Success Add Category!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->update([
+            'name' => strtoupper($request->get('name')),
+            'slug' => strtolower(Str::slug($request->name))
+        ]);
+
+        return redirect()->route('category.index')->with('success', 'Success Update Category!');
+    }
+
     public function show($id)
     {
         //
@@ -77,7 +77,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        // 
+        //
     }
 
     /**
@@ -87,10 +87,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.

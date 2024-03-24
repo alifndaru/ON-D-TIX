@@ -14,8 +14,8 @@ class KelasController extends Controller
      */
     public function index()
     {
-        // $kelasTransport = Kelas::all();
-        // return view("home", compact("kelasTransport"));
+        $kelasTransport = Kelas::all();
+        return view("server.kelas.index", compact("kelasTransport"));
     }
 
     /**
@@ -30,7 +30,14 @@ class KelasController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+        ]);
+        $kelas = new Kelas([
+            'name' => strtoupper($request->get('name')),
+        ]);
+        $kelas->save();
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil ditambahkan');
     }
 
     /**
@@ -64,7 +71,13 @@ class KelasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+        ]);
+        $kelas = Kelas::find($id);
+        $kelas->name = strtoupper($request->get('name'));
+        $kelas->save();
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil diperbarui');
     }
 
     /**
@@ -75,6 +88,8 @@ class KelasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $kelas = Kelas::find($id);
+        $kelas->delete();
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus');
     }
 }

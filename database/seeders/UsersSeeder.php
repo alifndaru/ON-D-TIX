@@ -15,14 +15,36 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'id' => 1,
-            'name' => 'Admin',
-            'username' => 'admin',
-            'password' => Hash::make('admin123'),
-            'level' => 'Admin',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
+        $users = [
+            [
+                'name' => 'Admin',
+                'username' => 'admin',
+                'password' => Hash::make('admin123'),
+                'level' => 'Admin',
+            ],
+            [
+                'name' => 'User',
+                'username' => 'user',
+                'password' => Hash::make('user123'),
+                'level' => 'Penumpang',
+            ],
+            [
+                'name' => 'Petugas',
+                'username' => 'petugas',
+                'password' => Hash::make('petugas123'),
+                'level' => 'Petugas',
+            ],
+        ];
+
+        foreach ($users as $user) {
+            DB::table('users')->insert([
+                'name' => $user['name'],
+                'username' => $user['username'],
+                'password' => $user['password'],
+                'level' => $user['level'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
     }
 }

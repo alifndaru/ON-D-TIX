@@ -25,6 +25,7 @@
         <a class="collapse-item" href="{{ route('rute.index') }}">Rute</a>
         <a class="collapse-item" href="{{ route('transportasi.index') }}">Transportasi</a>
         <a class="collapse-item" href="{{ route('category.index') }}">Category</a>
+        <a class="collapse-item" href="{{ route('kelas.index') }}">Class</a>
         <a class="collapse-item" href="{{ route('user.index') }}">User</a>
       </div>
     </div>

@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/rute', App\Http\Controllers\RuteController::class);
             Route::resource('/user', App\Http\Controllers\UserController::class);
             Route::get('/transaksi', [App\Http\Controllers\LaporanController::class, 'index'])->name('transaksi');
+            Route::resource('/kelas', App\Http\Controllers\KelasController::class);
+
         });
     });
 

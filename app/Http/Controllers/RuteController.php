@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Rute;
 use App\Models\Transportasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 
 class RuteController extends Controller
 {
@@ -15,9 +17,14 @@ class RuteController extends Controller
      */
     public function index()
     {
+        $response = Http::post('https://booking.kai.id/api/stations2');
+        $stations = $response->json();
+        $stations = collect($stations)->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
+            return $cityStations->sortBy('name');
+        })->sortKeys();
         $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
         $rute = Rute::with('transportasi.category')->orderBy('created_at', 'desc')->get();
-        return view('server.rute.index', compact('rute', 'transportasi'));
+        return view('server.rute.index', compact('rute', 'transportasi', 'stations'));
     }
 
     /**
@@ -29,13 +36,6 @@ class RuteController extends Controller
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -67,13 +67,6 @@ class RuteController extends Controller
             return redirect()->back()->with('success', 'Success Add Rute!');
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
@@ -88,8 +81,14 @@ class RuteController extends Controller
     public function edit($id)
     {
         $rute = Rute::find($id);
+        $response = Http::post('https://booking.kai.id/api/stations2');
+        $stations = $response->json();
+        $stations = collect($stations)->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
+            return $cityStations->sortBy('name');
+        })->sortKeys();
         $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
-        return view('server.rute.edit', compact('rute', 'transportasi'));
+        $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
+        return view('server.rute.edit', compact('rute', 'transportasi', 'stations'));
     }
 
     /**
@@ -101,9 +100,26 @@ class RuteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        $this->validate($request, [
+            'tujuan' => 'required',
+            'start' => 'required',
+            'end' => 'required',
+            'harga' => 'required',
+            'jam' => 'required',
+            'transportasi_id' => 'required'
+        ]);
 
+        $rute = Rute::find($id);
+        $rute->tujuan = $request->tujuan;
+        $rute->start = $request->start;
+        $rute->end = $request->end;
+        $rute->harga = $request->harga;
+        $rute->jam = $request->jam;
+        $rute->transportasi_id = $request->transportasi_id;
+        $rute->save();
+
+        return redirect()->route('rute.index')->with('success', 'Success Update Rute!');
+    }
     /**
      * Remove the specified resource from storage.
      *

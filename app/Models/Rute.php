@@ -23,5 +23,10 @@ class Rute extends Model
         return $this->belongsTo('App\Models\Transportasi', 'transportasi_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
     protected $table = 'rute';
 }

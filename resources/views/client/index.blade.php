@@ -64,6 +64,7 @@
                 @endforeach
               </select>
             </div>
+            <input type="hidden" name="selected_category" id="selected_category">
             <div class="form-group">
               <label for="start">Rute Awal</label><br>
               <select
