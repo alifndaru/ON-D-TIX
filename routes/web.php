@@ -56,6 +56,9 @@ Route::middleware(['auth'])->group(function () {
 
         // Route::get('/pilih-kursi/{id}', 'KursiController@show')->name('pilih-kursi');
 
+        // Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
+
+        Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
 
 
 
