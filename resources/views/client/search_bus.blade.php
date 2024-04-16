@@ -48,7 +48,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div>
-                <a href="{{ URL::previous() }}" class="text-white btn"><i class="fas fa-arrow-left mr-2"></i> Kembali</a>
+                <a href="/" class="text-white btn"><i class="fas fa-arrow-left mr-2"></i> Kembali</a>
             </div>
             <div class="card shadow">
                 <div class="card-header">Cari Tiket</div>

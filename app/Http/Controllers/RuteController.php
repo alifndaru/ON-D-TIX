@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rute;
 use App\Models\Category;
+use App\Models\Terminal;
 use App\Models\Transportasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -45,9 +46,19 @@ class RuteController extends Controller
         $stations = collect($stations)->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
             return $cityStations->sortBy('name');
         })->sortKeys();
-        $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
+
+
+        $busCategoryId = Category::where('name', 'BUS')->value('id');
+        $keretaCategoryId = Category::where('name', 'KERETA API')->value('id');
+
+        $transportasiKereta = Transportasi::where('category_id', $keretaCategoryId)->orderBy('kode')->orderBy('name')->get();
+        $transportasiBus = Transportasi::where('category_id', $busCategoryId)->orderBy('kode')->orderBy('name')->get();
+
+
+        // $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
         $rute = Rute::with('transportasi.category')->orderBy('created_at', 'desc')->get();
-        return view('server.rute.create', compact('category', 'stations', 'transportasi', 'rute'));
+        $terminal = Terminal::all();
+        return view('server.rute.create', compact('category', 'stations', 'rute', 'terminal', 'transportasiBus', 'transportasiKereta'));
     }
 
 
@@ -86,7 +97,7 @@ class RuteController extends Controller
             'category_id' => $request->category_id,
         ]);
 
-        return redirect()->back()->with('success', 'Success Add Rute!');
+        return redirect()->route('rute.index')->with('success', 'Success Add Rute!');
     }
 
 
