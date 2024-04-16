@@ -15,7 +15,9 @@ class Rute extends Model
         'end',
         'harga',
         'jam',
-        'transportasi_id'
+        'tanggal_keberangkatan',
+        'transportasi_id',
+        'category_id'
     ];
 
     public function transportasi()
@@ -27,6 +29,8 @@ class Rute extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+
 
     protected $table = 'rute';
 }

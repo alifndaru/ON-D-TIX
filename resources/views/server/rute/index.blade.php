@@ -74,8 +74,11 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add-modal">
+            {{-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add-modal">
                 <i class="fas fa-plus"></i>
+            </button> --}}
+            <button class="btn btn-primary">
+                <a href="{{route('create-rute')}}">tambah</a>
             </button>
         </div>
         <div class="card-body">
@@ -88,6 +91,7 @@
                             <td>Tujuan & Rute</td>
                             <td>Harga</td>
                             <td>Waktu</td>
+                            <td>Tanggal Keberangkatan</td>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -116,6 +120,8 @@
                                 </td>
                                 <td>Rp. {{ number_format($data->harga, 0, ',', '.') }}</td>
                                 <td>{{ date('H:i', strtotime($data->jam)) }}</td>
+                                <td>{{ date('Y-m-d', strtotime($data->tanggal_keberangkatan)) }}</td>
+
                                 <td>
                                     <form action="{{ route('rute.destroy', $data->id) }}" method="POST">
                                         @csrf
@@ -150,68 +156,89 @@
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="id">
-                        <div class="form-group">
-                            <label for="tujuan">Tujuan</label>
-                            <select class="form-control" id="tujuan" name="tujuan" required>
-                                @foreach ($stations as $city => $cityStations)
-                                    <optgroup label="{{ $city }}">
-                                        @foreach ($cityStations as $station)
-                                            <option value="{{ $station['city'] }}">{{ $station['city'] }}</option>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="category_id">Category</label>
+                                    <select class="form-control" id="category_id" name="category_id" required>
+                                        <option value="" disabled selected>-- Jenis Transportasi --</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="start">Rute Awal</label>
-                            <select class="form-control" id="start" name="start" required>
-                                @foreach ($stations as $city => $cityStations)
-                                    <optgroup label="{{ $city }}">
-                                        @foreach ($cityStations as $station)
-                                            <option value="{{ $station['name'] }}">
-                                                {{ $station['name'] }} - {{ $station['code'] }}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tujuan">Tujuan</label>
+                                    <select class="form-control" id="tujuan" name="tujuan" required>
+                                        @foreach ($stations as $city => $cityStations)
+                                            <optgroup label="{{ $city }}">
+                                                @foreach ($cityStations as $station)
+                                                    <option value="{{ $station['city'] }}">{{ $station['city'] }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="start">Rute Awal</label>
+                                    <select class="form-control" id="start" name="start" required>
+                                        @foreach ($stations as $city => $cityStations)
+                                            <optgroup label="{{ $city }}">
+                                                @foreach ($cityStations as $station)
+                                                    <option value="{{ $station['name'] }}">
+                                                        {{ $station['name'] }} - {{ $station['code'] }}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="end">Rute Akhir</label>
+                                    {{-- <input type="text" class="form-control" id="end" name="end"
+                                        placeholder="Rute Akhir" required /> --}}
+                                    <select class="form-control" id="end" name="end" required>
+                                        @foreach ($stations as $city => $cityStations)
+                                            <optgroup label="{{ $city }}">
+                                                @foreach ($cityStations as $station)
+                                                    <option value="{{ $station['name'] }}">
+                                                        {{ $station['name'] }} - {{ $station['code'] }}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="harga">Harga</label>
+                                    <input type="text" class="form-control" id="harga" name="harga"
+                                        onkeypress="return inputNumber(event)" placeholder="Harga" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="tanggal_keberangkatan">Tanggal Keberangkatan</label>
+                                    <input type="date" class="form-control" id="tanggal_keberangkatan"
+                                        name="tanggal_keberangkatan" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="jam">Jam Berangkat</label>
+                                    <input type="time" class="form-control" id="jam" name="jam" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="transportasi_id">Transportasi</label><br>
+                                    <select class="select2 form-control" id="transportasi_id" name="transportasi_id"
+                                        required style="width: 100%; color: #6e707e;">
+                                        <option value="" disabled selected>-- Pilih Transportasi --</option>
+                                        @foreach ($transportasi as $data)
+                                            <option value="{{ $data->id }}">{{ $data->kode }} -
+                                                {{ $data->name }} -
+                                                {{ $data->kelas->name }}
                                             </option>
                                         @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="end">Rute Akhir</label>
-                            {{-- <input type="text" class="form-control" id="end" name="end"
-                                placeholder="Rute Akhir" required /> --}}
-                            <select class="form-control" id="end" name="end" required>
-                                @foreach ($stations as $city => $cityStations)
-                                    <optgroup label="{{ $city }}">
-                                        @foreach ($cityStations as $station)
-                                            <option value="{{ $station['name'] }}">
-                                                {{ $station['name'] }} - {{ $station['code'] }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="harga">Harga</label>
-                            <input type="text" class="form-control" id="harga" name="harga"
-                                onkeypress="return inputNumber(event)" placeholder="Harga" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="jam">Jam Berangkat</label>
-                            <input type="time" class="form-control" id="jam" name="jam" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="transportasi_id">Transportasi</label><br>
-                            <select class="select2 form-control" id="transportasi_id" name="transportasi_id" required
-                                style="width: 100%; color: #6e707e;">
-                                <option value="" disabled selected>-- Pilih Transportasi --</option>
-                                @foreach ($transportasi as $data)
-                                    <option value="{{ $data->id }}">{{ $data->kode }} - {{ $data->name }} -
-                                        {{ $data->kelas->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -246,3 +273,4 @@
         };
     </script>
 @endsection
+

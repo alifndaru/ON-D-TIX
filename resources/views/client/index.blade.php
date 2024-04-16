@@ -1,122 +1,54 @@
 @extends('layouts.app')
 @section('title', 'Home')
 @section('styles')
-  <link href="{{ asset('vendor/select2/dist/css/select2.min.css') }}" rel="stylesheet"/>
-  <style>
-    .select2-container .select2-selection--single {
-      display: block;
-      width: 100%;
-      height: calc(1.5em + .75rem + 2px);
-      padding: .375rem .75rem;
-      font-size: 1rem;
-      font-weight: 400;
-      line-height: 2;
-      color: #6e707e;
-      background-color: #fff;
-      background-clip: padding-box;
-      border: 1px solid #d1d3e2;
-      border-radius: .35rem;
-      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    }
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-      color: #6e707e;
-      line-height: 28px;
-    }
+    <style>
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+            margin-top: 30px;
+        }
 
-    .select2-container .select2-selection--single .select2-selection__rendered {
-      display: block;
-      padding-left: 0;
-      padding-right: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin-top: -2px;
-    }
+        .card-body {
+            text-align: center;
+        }
 
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-      height: calc(1.5em + .75rem + 2px);
-      position: absolute;
-      top: 1px;
-      right: 1px;
-      width: 20px;
-    }
-  </style>
+        .col-md-4 {
+            margin-bottom: 20px;
+        }
+
+        .link-card,
+        .link-card:hover,
+        .link-card:active {
+            text-decoration: none;
+            color: black;
+            font-family: 'Quicksand', sans-serif;
+        }
+    </style>
+
 @endsection
 @section('content')
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="card shadow">
-        <div class="card-body">
-          <form method="POST" action="{{ route('store') }}" class="user">
-          @csrf
-            <div class="form-group">
-              <label for="category">Category</label><br>
-              <select
-                class="select2 form-control"
-                id="category"
-                name="category"
-                required
-              >
-                <option value="" disabled selected>-- Pilih Category --</option>
-                @foreach ($category as $val)
-                  <option value="{{ $val->id }}">{{ $val->name }}</option>
-                @endforeach
-              </select>
+    <div class="row justify-content-center">
+        @foreach ($category as $item)
+            <div class="col-md-4">
+                <a href="{{ route('category.show', ['slug' => $item->slug]) }}" class="link-card">
+                    {{-- <a href="{{route('category.show', ['id' => $item->id])}}" class="link-card"> --}}
+                        {{-- <a href="{{route('category.show', ['slug' => $item->slug, 'id' => $item->id])}}" class="link-card"> --}}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $item->name }}</h5>
+                        </div>
+                    </div>
+                </a>
             </div>
-            <input type="hidden" name="selected_category" id="selected_category">
-            <div class="form-group">
-              <label for="start">Rute Awal</label><br>
-              <select
-                class="select2 form-control"
-                id="start"
-                name="start"
-                required
-              >
-                <option value="" disabled selected>-- Pilih Rute Awal --</option>
-                @foreach ($data['start'] as $val)
-                  <option value="{{ $val }}">{{ $val }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="end">Rute Akhir</label><br>
-              <select
-                class="select2 form-control"
-                id="end"
-                name="end"
-                required
-              >
-                <option value="" disabled selected>-- Pilih Rute Akhir --</option>
-                @foreach ($data['end'] as $val)
-                  <option value="{{ $val }}">{{ $val }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="waktu">Waktu Berangkat</label>
-              <input
-                type="date"
-                class="form-control"
-                id="waktu"
-                name="waktu"
-                required
-              />
-            </div>
-            <button type="submit" class="btn btn-primary btn-user btn-block mt-4" style="font-size: 16px">
-              Cari Tiket
-            </button>
-          </form>
-        </div>
-      </div>
+        @endforeach
     </div>
-  </div>
 @endsection
-@section('script')
-  <script src="{{ asset('vendor/select2/dist/js/select2.full.min.js') }}"></script>
-  <script>
-    if(jQuery().select2) {
-      $(".select2").select2();
-    }
-  </script>
+@section('scripts')
+    <script>
+        // Your custom scripts if needed
+    </script>
 @endsection

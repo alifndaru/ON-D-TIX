@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Terminal extends Model
 {
     use HasFactory;
 
+
+    protected $table = 'terminal';
     protected $fillable = [
         'name',
-        'slug'
+        'city',
+        'province',
     ];
 
-    protected $table = 'category';
-
-    public function routes()
-    {
-        return $this->hasMany(Rute::class, 'category_id', 'id');
-    }
 }

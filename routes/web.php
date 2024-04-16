@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,13 +37,31 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/transaksi', [App\Http\Controllers\LaporanController::class, 'index'])->name('transaksi');
             Route::resource('/kelas', App\Http\Controllers\KelasController::class);
 
+
+            Route::get('/create-rute', [App\Http\Controllers\RuteController::class, 'create'])->name('create-rute');
+
         });
     });
 
     Route::middleware(['penumpang'])->group(function () {
+        Route::post('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
+
+
+        // Route::resource('/', App\Http\Controllers\HomepageController::class);
+        Route::get('/', [App\Http\Controllers\HomepageController::class, 'index'])->name('home');
+        Route::get('/{slug}', [App\Http\Controllers\HomepageController::class, 'show'])->name('category.show');
+
+        Route::get('/pilih-kursi/{id}', [App\Http\Controllers\HomepageController::class, 'kursi'])->name('pilih-kursi');
+
+        // Route::get('/pilih-kursi/{id}', 'KursiController@show')->name('pilih-kursi');
+
+
+
+
         Route::get('/pesan/{kursi}/{data}', [App\Http\Controllers\PemesananController::class, 'pesan'])->name('pesan');
         Route::get('/cari/kursi/{data}', [App\Http\Controllers\PemesananController::class, 'edit'])->name('cari.kursi');
-        Route::resource('/', App\Http\Controllers\PemesananController::class);
+        // Route::resource('/', App\Http\Controllers\PemesananController::class);
         Route::get('/history', [App\Http\Controllers\LaporanController::class, 'history'])->name('history');
         Route::get('/{id}/{data}', [App\Http\Controllers\PemesananController::class, 'show'])->name('show');
     });

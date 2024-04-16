@@ -12,11 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 
 class PemesananController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $ruteAwal = Rute::orderBy('start')->get()->groupBy('start');
@@ -35,113 +31,95 @@ class PemesananController extends Controller
         } else {
             $data['end'] = [];
         }
-        $category = Category::orderBy('name')->get();
-        return view('client.index', compact('data', 'category'));
+        return view('client.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+
     public function create()
     {
-        //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        if ($request->category) {
-            $category = Category::find($request->category);
-            $data = [
-                'start' => $request->start,
-                'end' => $request->end,
-                'category' => $category->id,
-                'waktu' => $request->waktu,
-            ];
-            $data = Crypt::encrypt($data);
-            return redirect()->route('show', ['id' => $category->slug, 'data' => $data]);
-        } else {
-            $this->validate($request, [
-                'rute_id' => 'required',
-                'waktu' => 'required',
-            ]);
 
-            $huruf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            $kodePemesanan = strtoupper(substr(str_shuffle($huruf), 0, 7));
 
-            $rute = Rute::with('transportasi.category')->find($request->rute_id);
-            // $jumlah_kursi = $rute->transportasi->jumlah + 2;
-            // $kursi = (int) floor($jumlah_kursi / 5);
-            // $kode = "ABCDE";
-            // $kodeKursi = strtoupper(substr(str_shuffle($kode), 0, 1) . rand(1, $kursi));
+    // public function store(Request $request)
+    // {
+    //     if ($request->category) {
+    //         $category = Category::find($request->category);
+    //         $data = [
+    //             'start' => $request->start,
+    //             'end' => $request->end,
+    //             'category' => $category->id,
+    //             'waktu' => $request->waktu,
+    //         ];
+    //         $data = Crypt::encrypt($data);
+    //         return redirect()->route('show', ['id' => $category->slug, 'data' => $data]);
+    //     } else {
+    //         $this->validate($request, [
+    //             'rute_id' => 'required',
+    //             'waktu' => 'required',
+    //         ]);
 
-            $waktu = $request->waktu . " " . $rute->jam;
+    //         $huruf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    //         $kodePemesanan = strtoupper(substr(str_shuffle($huruf), 0, 7));
 
-            Pemesanan::Create([
-                'kode' => $kodePemesanan,
-                // 'kursi' => $request,
-                'waktu' => $waktu,
-                'total' => $rute->harga,
-                'rute_id' => $rute->id,
-                'penumpang_id' => Auth::user()->id
-            ]);
+    //         $rute = Rute::with('transportasi.category')->find($request->rute_id);
+    //         $waktu = $request->waktu . " " . $rute->jam;
 
-            return redirect()->back()->with('success', 'Pemesanan Tiket ' . $rute->transportasi->category->name . ' Success!');
-        }
-    }
+    //         Pemesanan::Create([
+    //             'kode' => $kodePemesanan,
+    //             // 'kursi' => $request,
+    //             'waktu' => $waktu,
+    //             'total' => $rute->harga,
+    //             'rute_id' => $rute->id,
+    //             'penumpang_id' => Auth::user()->id
+    //         ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id, $data)
-    {
-        $data = Crypt::decrypt($data);
-        $category = Category::findorfail($data['category']);
-        $rute = Rute::with('transportasi')->where('start', $data['start'])->where('end', $data['end'])->get();
-        $dataRute = [];
-        if ($rute->count() > 0) {
-            foreach ($rute as $val) {
+    //         return redirect()->back()->with('success', 'Pemesanan Tiket ' . $rute->transportasi->category->name . ' Success!');
+    //     }
+    // }
 
-                $pemesanan = Pemesanan::where('rute_id', $val->id)->where('waktu')->count();
-                if ($val->transportasi) {
-                    // dd($val->transportasi->category_id);
-                    $kursi = Transportasi::find($val->transportasi_id)->jumlah - $pemesanan;
-                    if ($val->transportasi->category_id == $category->id) {
-                        // dd($val->transportasi->category_id == $category->id);
-                        $dataRute[] = [
-                            'harga' => $val->harga,
-                            'start' => $val->start,
-                            'end' => $val->end,
-                            'tujuan' => $val->tujuan,
-                            'transportasi' => $val->transportasi->name,
-                            'kode' => $val->transportasi->kode,
-                            'kursi' => $kursi,
-                            'waktu' => $data['waktu'],
-                            'id' => $val->id,
-                        ];
-                    }
-                }
-            }
-            if (!empty($dataRute)) {
-                sort($dataRute);
-            }
-            // sort($dataRute);
-        } else {
-            $dataRute = [];
-        }
-        $id = $category->name;
-        return view('client.show', compact('id', 'dataRute'));
-    }
+
+    // public function show($id, $data)
+    // {
+    //     $data = Crypt::decrypt($data);
+    //     $category = Category::findorfail($data['category']);
+    //     $rute = Rute::with('transportasi')->where('start', $data['start'])->where('end', $data['end'])->get();
+    //     $dataRute = [];
+    //     if ($rute->count() > 0) {
+    //         foreach ($rute as $val) {
+
+    //             $pemesanan = Pemesanan::where('rute_id', $val->id)->where('waktu')->count();
+    //             if ($val->transportasi) {
+    //                 // dd($val->transportasi->category_id);
+    //                 $kursi = Transportasi::find($val->transportasi_id)->jumlah - $pemesanan;
+    //                 if ($val->transportasi->category_id == $category->id) {
+    //                     // dd($val->transportasi->category_id == $category->id);
+    //                     $dataRute[] = [
+    //                         'harga' => $val->harga,
+    //                         'start' => $val->start,
+    //                         'end' => $val->end,
+    //                         'tujuan' => $val->tujuan,
+    //                         'transportasi' => $val->transportasi->name,
+    //                         'kode' => $val->transportasi->kode,
+    //                         'kursi' => $kursi,
+    //                         'waktu' => $data['waktu'],
+    //                         'id' => $val->id,
+    //                     ];
+    //                 }
+    //             }
+    //         }
+    //         if (!empty($dataRute)) {
+    //             sort($dataRute);
+    //         }
+    //         // sort($dataRute);
+    //     } else {
+    //         $dataRute = [];
+    //     }
+    //     $id = $category->name;
+    //     return view('client.show', compact('id', 'dataRute'));
+    // }
 
     /**
      * Show the form for editing the specified resource.

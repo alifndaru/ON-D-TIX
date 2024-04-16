@@ -107,6 +107,18 @@
                         required />
                 </div>
                 <div class="form-group">
+                    <label for="tanggal_keberangkatan">Tanggal Keberangkatan</label>
+                    <input type="date" class="form-control" id="tanggal_keberangkatan" name="tanggal_keberangkatan" value="{{ $rute->tanggal_keberangkatan }} required />
+                </div>
+                <div class="form-group">
+                    <label for="category_id">Category</label>
+                    <select class="form-control" id="category_id" name="category_id" required>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="transportasi_id">Transportasi</label><br>
                     <select class="select2 form-control" id="transportasi_id" name="transportasi_id" required
                         style="width: 100%; color: #6e707e;">

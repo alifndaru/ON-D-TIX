@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rute;
+use App\Models\Category;
 use App\Models\Transportasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+
 
 
 class RuteController extends Controller
@@ -24,7 +28,8 @@ class RuteController extends Controller
         })->sortKeys();
         $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
         $rute = Rute::with('transportasi.category')->orderBy('created_at', 'desc')->get();
-        return view('server.rute.index', compact('rute', 'transportasi', 'stations'));
+        $categories = Category::all();
+        return view('server.rute.index', compact('rute', 'transportasi', 'stations', 'categories'));
     }
 
     /**
@@ -34,43 +39,63 @@ class RuteController extends Controller
      */
     public function create()
     {
-        //
+        $category  = Category::all();
+        $response = Http::post('https://booking.kai.id/api/stations2');
+        $stations = $response->json();
+        $stations = collect($stations)->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
+            return $cityStations->sortBy('name');
+        })->sortKeys();
+        $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
+        $rute = Rute::with('transportasi.category')->orderBy('created_at', 'desc')->get();
+        return view('server.rute.create', compact('category', 'stations', 'transportasi', 'rute'));
     }
+
+
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $rules = [
             'tujuan' => 'required',
             'start' => 'required',
             'end' => 'required',
             'harga' => 'required',
-            'jam' => 'required',
-            'transportasi_id' => 'required'
+            'tanggal_keberangkatan' => ['required', 'date_not_past'],
+            'transportasi_id' => 'required',
+            'category_id' => 'required'
+        ];
+
+        if ($request->tanggal_keberangkatan === now()->toDateString()) {
+            $rules['jam'] = 'required|after:now';
+        } else {
+            $rules['jam'] = 'required';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        Rute::create([
+            'tujuan' => $request->tujuan,
+            'start' => $request->start,
+            'end' => $request->end,
+            'harga' => $request->harga,
+            'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
+            'jam' => $request->jam,
+            'transportasi_id' => $request->transportasi_id,
+            'category_id' => $request->category_id,
         ]);
 
-        Rute::updateOrCreate(
-            [
-                'id' => $request->id
-            ],
-            [
-                'tujuan' => $request->tujuan,
-                'start' => $request->start,
-                'end' => $request->end,
-                'harga' => $request->harga,
-                'jam' => $request->jam,
-                'transportasi_id' => $request->transportasi_id,
-            ]
-        );
+        return redirect()->back()->with('success', 'Success Add Rute!');
+    }
 
-        if ($request->id) {
-            return redirect()->route('rute.index')->with('success', 'Success Update Rute!');
-        } else {
-            return redirect()->back()->with('success', 'Success Add Rute!');
-        }
-    }
-    public function show($id)
-    {
-        //
-    }
+
+
+
+    // public function show($id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -88,7 +113,8 @@ class RuteController extends Controller
         })->sortKeys();
         $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
         $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
-        return view('server.rute.edit', compact('rute', 'transportasi', 'stations'));
+        $categories = Category::all();
+        return view('server.rute.edit', compact('rute', 'transportasi', 'stations', 'categories'));
     }
 
     /**
@@ -106,15 +132,18 @@ class RuteController extends Controller
             'end' => 'required',
             'harga' => 'required',
             'jam' => 'required',
-            'transportasi_id' => 'required'
+            'transportasi_id' => 'required',
+            'category_id' => 'required'
         ]);
 
         $rute = Rute::find($id);
         $rute->tujuan = $request->tujuan;
+        $rute->category_id = $request->category_id;
         $rute->start = $request->start;
         $rute->end = $request->end;
         $rute->harga = $request->harga;
         $rute->jam = $request->jam;
+        $rute->tanggal_keberangkatan = $request->tanggal_keberangkatan;
         $rute->transportasi_id = $request->transportasi_id;
         $rute->save();
 
