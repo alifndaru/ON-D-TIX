@@ -114,12 +114,13 @@
          }
 
          function goToCheckout() {
-             // Ubah objek selectedSeats menjadi string JSON
              var selectedSeatsJSON = JSON.stringify(selectedSeats);
-             console.log(selectedSeatsJSON);
+             var checkoutUrl = '{{ route('checkout') }}';
 
-             // Kirim data ke halaman checkout detail
-             window.location.href = '/checkout?seats=' + encodeURIComponent(selectedSeatsJSON);
+
+            var result =  checkoutUrl + '?selectedSeats=' + encodeURIComponent(selectedSeatsJSON);
+
+             window.location.href = result
          }
      </script>
  @endsection
