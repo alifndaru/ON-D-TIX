@@ -31,6 +31,7 @@
                          <div class="text-center mt-4">
                              {{-- <button class="btn btn-success" onclick="bookSelectedSeats()">Book Selected Seats</button> --}}
                              <button class="btn btn-success" onclick="goToCheckout()">Go to Checkout</button>
+
                          </div>
                          <div id="selected-seats" class="text-center mt-3"></div>
                      </div>
@@ -79,6 +80,7 @@
 
 
  @section('script')
+
      <script>
          var selectedSeats = {};
 
@@ -117,10 +119,20 @@
              var selectedSeatsJSON = JSON.stringify(selectedSeats);
              var checkoutUrl = '{{ route('checkout') }}';
 
+             var transportasiId = "{{ $transportasi->id }}";
+             var ruteId = "{{ $rute->id }}";
 
-            var result =  checkoutUrl + '?selectedSeats=' + encodeURIComponent(selectedSeatsJSON);
+             //  // Buat URL untuk halaman checkout
+             var url = "/checkout?selectedSeats=" + encodeURIComponent(JSON.stringify(selectedSeatsJSON)) +
+                 "&transportasi_id=" + encodeURIComponent(transportasiId) +
+                 "&rute_id=" + encodeURIComponent(ruteId);
+
+             var result = checkoutUrl + '?selectedSeats=' + encodeURIComponent(selectedSeatsJSON) + "&transportasi_id=" +
+                 encodeURIComponent(transportasiId) +
+                 "&rute_id=" + encodeURIComponent(ruteId);
 
              window.location.href = result
          }
+
      </script>
  @endsection
