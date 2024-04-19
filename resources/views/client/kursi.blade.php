@@ -29,7 +29,6 @@
                              @endfor
                          </div>
                          <div class="text-center mt-4">
-                             {{-- <button class="btn btn-success" onclick="bookSelectedSeats()">Book Selected Seats</button> --}}
                              <button class="btn btn-success" onclick="goToCheckout()">Go to Checkout</button>
 
                          </div>
@@ -81,6 +80,7 @@
 
  @section('script')
 
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
      <script>
          var selectedSeats = {};
 
@@ -110,29 +110,32 @@
          }
 
          function bookSelectedSeats() {
-             // Kirim kursi yang dipilih ke server
-             // Anda dapat menggunakan AJAX atau pengiriman formulir
              console.log(selectedSeats);
          }
 
-         function goToCheckout() {
-             var selectedSeatsJSON = JSON.stringify(selectedSeats);
-             var checkoutUrl = '{{ route('checkout') }}';
 
+         // Function to go to checkout page
+         function goToCheckout() {
+             var encryptionKey =
+             "abcbakbaxiah98kwdnkjbbcjasakhwew8inckswiu*OOIWUhiqwuqwbhbh&@#*QBChba"; // Replace with your encryption key
+             var encryptedSeats = encryptData(selectedSeats, encryptionKey);
+
+            //  console.log(encryptedSeats);
              var transportasiId = "{{ $transportasi->id }}";
              var ruteId = "{{ $rute->id }}";
 
-             //  // Buat URL untuk halaman checkout
-             var url = "/checkout?selectedSeats=" + encodeURIComponent(JSON.stringify(selectedSeatsJSON)) +
-                 "&transportasi_id=" + encodeURIComponent(transportasiId) +
-                 "&rute_id=" + encodeURIComponent(ruteId);
+             // Construct the URL with the encryptedSeats and other parameters
+             var url = '{{ route('checkout') }}' + '?encryptedSeats=' + encodeURIComponent(encryptedSeats) +
+                 '&transportasi_id=' + encodeURIComponent(transportasiId) +
+                 '&rute_id=' + encodeURIComponent(ruteId);
 
-             var result = checkoutUrl + '?selectedSeats=' + encodeURIComponent(selectedSeatsJSON) + "&transportasi_id=" +
-                 encodeURIComponent(transportasiId) +
-                 "&rute_id=" + encodeURIComponent(ruteId);
-
-             window.location.href = result
+             // Redirect the user to the checkout page
+             window.location.href = url;
          }
 
+         function encryptData(data) {
+             var encryptedData = btoa(JSON.stringify(data)); // Menggunakan fungsi btoa() untuk enkripsi Base64
+             return encryptedData;
+         }
      </script>
  @endsection

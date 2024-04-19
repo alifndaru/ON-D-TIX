@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pemesanan;
 use Illuminate\Http\Request;
 use App\Models\Rute;
 use App\Models\Transportasi;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
-
 
 class CheckoutController extends Controller
 {
@@ -23,9 +20,26 @@ class CheckoutController extends Controller
             return back()->withErrors(['message' => 'Transportasi atau rute tidak ditemukan.']);
         }
 
-        $selectedSeats = json_decode($request->query('selectedSeats'), true);
-        // Kirim data ke view
-        return view('checkout.index', compact('user', 'transportasi', 'rute', 'selectedSeats'));
-    }
+        // Pastikan data terenkripsi tersedia dan valid
+        $encryptedSeats = $request->query('encryptedSeats');
+        if (!$encryptedSeats) {
+            return back()->withErrors(['message' => 'Data terenkripsi tidak tersedia.']);
+        }
 
+        try {
+            // Dekripsi data terenkripsi menggunakan base64_decode
+            $decryptedSeatsJson = base64_decode($encryptedSeats);
+            $decryptedSeats = json_decode($decryptedSeatsJson, true);
+        } catch (\Exception $e) {
+            // Tangani kesalahan dekripsi
+            return back()->withErrors(['message' => 'Gagal mendekripsi data.']);
+        }
+
+        $totalPrice = count($decryptedSeats) * $rute->harga;
+        $formattedTotalPrice = number_format($totalPrice, 0, ',', '.');
+
+
+        // Kirim data ke view
+        return view('checkout.index', compact('user', 'transportasi', 'rute', 'decryptedSeats', 'formattedTotalPrice'));
+    }
 }

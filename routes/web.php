@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pesan/{kursi}/{data}', [App\Http\Controllers\PemesananController::class, 'pesan'])->name('pesan');
         Route::get('/cari/kursi/{data}', [App\Http\Controllers\PemesananController::class, 'edit'])->name('cari.kursi');
         Route::get('/kategori/{slug}', [App\Http\Controllers\HomepageController::class, 'show'])->name('category.show');
-        Route::get('/{id}/{data}', [App\Http\Controllers\PemesananController::class, 'show'])->name('show');
+        // Route::get('/{id}/{data}', [App\Http\Controllers\PemesananController::class, 'show'])->name('show');
     });
 });
 
