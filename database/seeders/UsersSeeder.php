@@ -19,18 +19,21 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'username' => 'admin',
+                'email' => 'admin@on.dtix.com',
                 'password' => Hash::make('admin123'),
                 'level' => 'Admin',
             ],
             [
                 'name' => 'User',
                 'username' => 'user',
+                'email' => 'user@on.dtix.com',
                 'password' => Hash::make('user123'),
                 'level' => 'Penumpang',
             ],
             [
                 'name' => 'Petugas',
                 'username' => 'petugas',
+                'email' => 'petugas@on.dtix.com',
                 'password' => Hash::make('petugas123'),
                 'level' => 'Petugas',
             ],
@@ -39,6 +42,7 @@ class UsersSeeder extends Seeder
         foreach ($users as $user) {
             DB::table('users')->insert([
                 'name' => $user['name'],
+                'email' => $user['email'],
                 'username' => $user['username'],
                 'password' => $user['password'],
                 'level' => $user['level'],

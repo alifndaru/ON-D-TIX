@@ -22,6 +22,14 @@
                   @enderror
                 </div>
                 <div class="form-group">
+                  <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" required autocomplete="off" placeholder="Email Address">
+                  @error('email')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+                <div class="form-group">
                   <input type="text" class="form-control form-control-user @error('username') is-invalid @enderror" name="username" required autocomplete="off" placeholder="Username">
                   @error('username')
                     <span class="invalid-feedback" role="alert">

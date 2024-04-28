@@ -20,3 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('/terminal', App\Http\Controllers\Api\TerminalController::class);
+Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
+Route::post('/payment/webhook/xendit', [App\Http\Controllers\PaymentController::class, 'webhook'])->name('payment.webhook');
+

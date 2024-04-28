@@ -40,6 +40,6 @@ class CheckoutController extends Controller
 
 
         // Kirim data ke view
-        return view('checkout.index', compact('user', 'transportasi', 'rute', 'decryptedSeats', 'formattedTotalPrice'));
+        return view('checkout.index', compact('user', 'transportasi', 'rute', 'decryptedSeats', 'formattedTotalPrice', 'totalPrice'));
     }
 }
