@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Kelas;
 use App\Models\Transportasi;
 use Illuminate\Http\Request;
+use App\Models\Seat;
 
 class TransportasiController extends Controller
 {
@@ -38,6 +39,36 @@ class TransportasiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //     $this->validate($request, [
+    //         'name' => 'required',
+    //         'kode' => 'required',
+    //         'jumlah' => 'required',
+    //         'category_id' => 'required',
+    //         'kelas_id' => 'required'
+    //     ]);
+
+    //     Transportasi::updateOrCreate(
+    //         [
+    //             'id' => $request->id
+    //         ],
+    //         [
+    //             'name' => $request->name,
+    //             'kode' => strtoupper($request->kode),
+    //             'jumlah' => $request->jumlah,
+    //             'category_id' => $request->category_id,
+    //             'kelas_id' => $request->kelas_id,
+    //         ]
+    //     );
+
+    //     if ($request->id) {
+    //         return redirect()->route('transportasi.index')->with('success', 'Success Update Transportasi!');
+    //     } else {
+    //         return redirect()->back()->with('success', 'Success Add Transportasi!');
+    //     }
+    // }
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -48,7 +79,7 @@ class TransportasiController extends Controller
             'kelas_id' => 'required'
         ]);
 
-        Transportasi::updateOrCreate(
+        $transportasi = Transportasi::updateOrCreate(
             [
                 'id' => $request->id
             ],
@@ -60,6 +91,16 @@ class TransportasiController extends Controller
                 'kelas_id' => $request->kelas_id,
             ]
         );
+
+        // If a new transportasi was created, add seats
+        if (!$request->id) {
+            for ($i = 1; $i <= $request->jumlah; $i++) {
+                $seat = new Seat;
+                $seat->number = $i;
+                $seat->transportasi_id = $transportasi->id;
+                $seat->save();
+            }
+        }
 
         if ($request->id) {
             return redirect()->route('transportasi.index')->with('success', 'Success Update Transportasi!');

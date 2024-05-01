@@ -39,9 +39,17 @@
                     <form action="{{ route('payment.create') }}" method="POST">
                         @csrf
                         <div class="card-body">
+                            <a href="{{ url()->previous() }}" class="btn btn-secondary mb-3">Back</a>
+                            @if (session()->has('error'))
+                                <div class="alert alert-error text-center">
+                                    <strong>
+                                        {{ session()->get('error') }}
+                                    </strong>
+                                </div>
+                            @endif
                             <h2 class="text-center mb-4">Detail Penumpang</h2>
                             <div class="card mb-4">
-                                <input type="text" hidden name="user_id" id="user_id" value="{{ auth()->user()->id }}">
+                                <input type="text" name="user_id" id="user_id" value="{{ auth()->user()->id }}" hidden>
                                 <label for="payer_email">Email</label>
                                 <input type="email" name="payer_email" id="payer_email"
                                     value="{{ auth()->user()->email }}">
@@ -53,15 +61,21 @@
                                     <ul class="list-group">
                                         @foreach ($decryptedSeats as $seat => $value)
                                             <li class="list-group-item">
+                                                <input type="hidden" name="seat[]" id="seat"
+                                                    value="{{ $seat }}">
                                                 <i class="fas fa-chair"></i> {{ $seat }}
                                             </li>
                                         @endforeach
                                     </ul>
+
+
                                 </div>
                             </div>
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <h4 class="card-title">Detail Transportasi:</h4>
+                                    <input type="hidden" name="transportasi_id" id="transportasi_id"
+                                        value="{{ $transportasi->id }}">
                                     <p><strong>Nama:</strong> {{ $transportasi->name }}</p>
                                     <p><strong>Jenis:</strong> {{ $transportasi->category->name }}</p>
                                     <p><strong>Class:</strong> {{ $transportasi->kelas->name }}</p>
@@ -70,6 +84,7 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <h4 class="card-title">Detail Rute:</h4>
+                                    <input type="hidden" name="rute_id" id="rute_id" value="{{ $rute->id }}">
                                     <p><strong>Asal:</strong> {{ $rute->start }}</p>
                                     <p><strong>Tujuan:</strong> {{ $rute->tujuan }}</p>
                                     <p><strong>Harga:</strong> {{ $rute->harga }}</p>

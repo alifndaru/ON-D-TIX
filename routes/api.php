@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 
 Route::resource('/terminal', App\Http\Controllers\Api\TerminalController::class);
 Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
 Route::post('/payment/webhook/xendit', [App\Http\Controllers\PaymentController::class, 'webhook'])->name('payment.webhook');
+Route::get('all-transactions', [App\Http\Controllers\PaymentController::class, 'getAllTransactions']);
 

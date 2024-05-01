@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Rute;
+use App\Models\Seat;
 use App\Models\Transportasi;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +17,7 @@ class CheckoutController extends Controller
         $ruteId = $request->rute_id;
         $transportasi = Transportasi::find($transportasiId);
         $rute = Rute::find($ruteId);
+
         if (!$transportasi || !$rute) {
             return back()->withErrors(['message' => 'Transportasi atau rute tidak ditemukan.']);
         }

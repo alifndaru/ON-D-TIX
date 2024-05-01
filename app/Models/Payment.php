@@ -12,5 +12,14 @@ class Payment extends Model
         'external_id',
         'checkout_url',
         'status',
+        'seat',
+        'transportasi_id',
+        'rute_id'
     ];
+
+
+    public function seats()
+    {
+        return $this->belongsToMany(Seat::class);
+    }
 }

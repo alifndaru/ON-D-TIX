@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Rute;
 use App\Models\Terminal;
 use App\Models\Transportasi;
+use App\Models\Seat;
 
 class HomepageController extends Controller
 {
@@ -59,7 +60,9 @@ class HomepageController extends Controller
     {
         $rute = Rute::find($id);
         $transportasi = Transportasi::find($rute->transportasi_id);
-        return view('client.kursi', ['rute' => $rute, 'transportasi' => $transportasi]);
+        $seats = Seat::where('transportasi_id', $id)->get();
+
+        return view('client.kursi', ['rute' => $rute, 'transportasi' => $transportasi, 'seats' => $seats]);
     }
 
     public function edit($id)
