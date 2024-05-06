@@ -15,8 +15,8 @@ class CreatePaymentSeatTable extends Migration
     {
         Schema::create('payment_seat', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('payment_id')->constrained()->onDelete('cascade');
-            $table->foreignId('seat_id')->constrained()->onDelete('cascade');
+            $table->bigInteger('payment_id');
+            $table->bigInteger('seat_id');
             $table->timestamps();
         });
     }

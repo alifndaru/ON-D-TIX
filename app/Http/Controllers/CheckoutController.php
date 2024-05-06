@@ -18,6 +18,13 @@ class CheckoutController extends Controller
         $transportasi = Transportasi::find($transportasiId);
         $rute = Rute::find($ruteId);
 
+
+
+        $timestamp = now()->timestamp;
+        $order_id = $timestamp;
+
+
+
         if (!$transportasi || !$rute) {
             return back()->withErrors(['message' => 'Transportasi atau rute tidak ditemukan.']);
         }
@@ -42,6 +49,6 @@ class CheckoutController extends Controller
 
 
         // Kirim data ke view
-        return view('checkout.index', compact('user', 'transportasi', 'rute', 'decryptedSeats', 'formattedTotalPrice', 'totalPrice'));
+        return view('checkout.index', compact('user', 'transportasi', 'rute', 'decryptedSeats', 'formattedTotalPrice', 'totalPrice', 'order_id'));
     }
 }

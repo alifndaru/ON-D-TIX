@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSeatsTable extends Migration
+class AddOrderIdToOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateSeatsTable extends Migration
      */
     public function up()
     {
-        Schema::create('seats', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('seat_id');
-            $table->boolean('is_booked')->default(false);
-            $table->timestamps();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->bigInteger('order_id')->after('id');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateSeatsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('seats');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('order_id');
+        });
     }
 }

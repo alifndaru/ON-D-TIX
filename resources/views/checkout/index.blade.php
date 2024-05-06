@@ -50,6 +50,7 @@
                             <h2 class="text-center mb-4">Detail Penumpang</h2>
                             <div class="card mb-4">
                                 <input type="text" name="user_id" id="user_id" value="{{ auth()->user()->id }}" hidden>
+                                <input type="text" name="order_id" id="order_id" value="{{ $order_id }}" hidden>
                                 <label for="payer_email">Email</label>
                                 <input type="email" name="payer_email" id="payer_email"
                                     value="{{ auth()->user()->email }}">

@@ -96,7 +96,7 @@ class TransportasiController extends Controller
         if (!$request->id) {
             for ($i = 1; $i <= $request->jumlah; $i++) {
                 $seat = new Seat;
-                $seat->number = $i;
+                $seat->seat_id = $i;
                 $seat->transportasi_id = $transportasi->id;
                 $seat->save();
             }

@@ -9,10 +9,10 @@ class Payment extends Model
 {
     protected $fillable = [
         'user_id',
+        'order_id',
         'external_id',
         'checkout_url',
         'status',
-        'seat',
         'transportasi_id',
         'rute_id'
     ];
@@ -21,5 +21,10 @@ class Payment extends Model
     public function seats()
     {
         return $this->belongsToMany(Seat::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
     }
 }

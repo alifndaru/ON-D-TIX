@@ -31,26 +31,26 @@
                              @foreach ($seats as $seat)
                                  @php
                                      $disabled = $seat->is_booked ? 'disabled' : '';
-                                     $selected = isset($selectedSeats[$seat->number]) ? 'bg-primary' : '';
+                                     $selected = isset($selectedSeats[$seat->seat_id]) ? 'bg-primary' : '';
                                      $color = $seat->is_booked ? 'bg-light' : ($selected ? 'bg-primary' : 'bg-dark');
                                  @endphp
                                  <div class="col-md-4 mb-3">
                                      <div class="kursi {{ $color }} text-center p-3 rounded cursor-pointer"
-                                         onclick="toggleSeatSelection('{{ $seat->number }}', '{{ json_encode($seat) }}', '{{ $disabled }}')"
-                                         data-seat="{{ $seat->number }}">
+                                         onclick="toggleSeatSelection('{{ $seat->seat_id }}', '{{ json_encode($seat) }}', '{{ $disabled }}')"
+                                         data-seat="{{ $seat->seat_id }}">
                                          <h4 class="font-weight-bold text-{{ $disabled ? 'dark' : 'white' }} mb-0">
-                                             {{ $seat->number }}</h4>
+                                             {{ $seat->seat_id }}</h4>
                                          @if ($selected)
                                              <i class="fas fa-check text-success mt-2"></i>
                                          @endif
                                      </div>
                                  </div>
                              @endforeach
-                            </div>
-                            <div class="d-flex justify-content-center mt-4">
-                                <button class="btn btn-success" onclick="goToCheckout()">Go to Checkout</button>
-                            </div>
-                            <div id="selected-seats" class="text-center mt-3"></div>
+                         </div>
+                         <div class="d-flex justify-content-center mt-4">
+                             <button class="btn btn-success" onclick="goToCheckout()">Go to Checkout</button>
+                         </div>
+                         <div id="selected-seats" class="text-center mt-3"></div>
                      </div>
                      <a href="{{ route('home') }}" class="btn btn-link mt-3"><i class="fas fa-arrow-left"></i> Kembali</a>
                  </div>
@@ -148,6 +148,10 @@
 
              // Function to go to checkout page
              function goToCheckout() {
+                 if (Object.keys(selectedSeats).length === 0) {
+                     alert('Silakan pilih setidaknya satu kursi sebelum melanjutkan ke checkout.');
+                     return;
+                 }
                  var encryptionKey =
                      "abcbakbaxiah98kwdnkjbbcjasakhwew8inckswiu*OOIWUhiqwuqwbhbh&@#*QBChba"; // Replace with your encryption key
                  var encryptedSeats = encryptData(selectedSeats, encryptionKey);

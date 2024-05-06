@@ -107,13 +107,13 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
-                                    <h5 class="card-title">{{ $data->transportasi->name }}</h5>
+                                    <h5 class="card-title">{{ $data->transportasi ? $data->transportasi->name : '' }}</h5>
                                     <p class="card-text">
                                         <small class="text-muted">
-                                            {{ $data->transportasi->category->name }}
+                                            {{ $data->transportasi && $data->transportasi->category ? $data->transportasi->category->name : '' }}
                                         </small> -
                                         <small class="text-muted">
-                                            {{ $data->transportasi->kelas->name }}
+                                            {{ $data->transportasi && $data->transportasi->kelas ? $data->transportasi->kelas->name : '' }}
                                         </small>
                                     </p>
                                 </td>
