@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Pemesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -22,16 +23,16 @@ class LaporanController extends Controller
 
     public function kode(Request $request)
     {
-        return redirect()->route('transaksi.show', $request->kode);
+        return redirect()->route('transaksi.show', $request->order_id);
     }
 
     public function show($id)
     {
-        $data = Pemesanan::with('rute.transportasi.category', 'penumpang')->where('kode', $id)->first();
+        $data = Order::with(['transportasi', 'rute'])->where('order_id', $id)->first();
         if ($data) {
             return view('server.laporan.show', compact('data'));
         } else {
-            return redirect()->back()->with('error', 'Kode Transaksi Tidak Ditemukan!');
+            return redirect()->back()->with('error', 'order_id Transaksi Tidak Ditemukan!');
         }
     }
 

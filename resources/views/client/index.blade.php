@@ -35,8 +35,6 @@
         @foreach ($category as $item)
             <div class="col-md-4">
                 <a href="{{ route('category.show', ['slug' => $item->slug]) }}" class="link-card">
-                    {{-- <a href="{{route('category.show', ['id' => $item->id])}}" class="link-card"> --}}
-                        {{-- <a href="{{route('category.show', ['slug' => $item->slug, 'id' => $item->id])}}" class="link-card"> --}}
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->name }}</h5>

@@ -27,14 +27,20 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 
-    // public function payments()
-    // {
-    //     return $this->hasMany(Payment::class, 'order_id');
-    // }
-
     public function markAsCompleted()
     {
         $this->status = self::STATUS_COMPLETED;
         $this->save();
+    }
+
+
+    public function transportasi()
+    {
+        return $this->belongsTo(Transportasi::class, 'transportasi_id');
+    }
+
+    public function rute()
+    {
+        return $this->belongsTo(Rute::class, 'rute_id');
     }
 }

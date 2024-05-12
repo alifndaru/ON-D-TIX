@@ -24,4 +24,9 @@ class User extends Authenticatable
     ];
 
     protected $table = 'users';
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

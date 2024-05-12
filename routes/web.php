@@ -36,8 +36,6 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/user', App\Http\Controllers\UserController::class);
             Route::get('/transaksi', [App\Http\Controllers\LaporanController::class, 'index'])->name('transaksi');
             Route::resource('/kelas', App\Http\Controllers\KelasController::class);
-
-
             Route::get('/create-rute', [App\Http\Controllers\RuteController::class, 'create'])->name('create-rute');
 
         });
@@ -45,16 +43,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['penumpang'])->group(function () {
         Route::get('/', [App\Http\Controllers\HomepageController::class, 'index'])->name('home');
+        Route::get('/detail/{order_id}', [App\Http\Controllers\PaymentController::class, 'detailTicket'])->name('detailTicket');
         Route::post('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
         Route::get('/pilih-kursi/{id}', [App\Http\Controllers\HomepageController::class, 'kursi'])->name('pilih-kursi');
-
-
-        Route::get('/history', [App\Http\Controllers\LaporanController::class, 'history'])->name('history');
+        Route::get('/history', [App\Http\Controllers\PaymentController::class, 'history'])->name('history');
         Route::get('/pesan/{kursi}/{data}', [App\Http\Controllers\PemesananController::class, 'pesan'])->name('pesan');
         Route::get('/cari/kursi/{data}', [App\Http\Controllers\PemesananController::class, 'edit'])->name('cari.kursi');
         Route::get('/kategori/{slug}', [App\Http\Controllers\HomepageController::class, 'show'])->name('category.show');
         Route::get('checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
-        // Route::get('/{id}/{data}', [App\Http\Controllers\PemesananController::class, 'show'])->name('show');
     });
 });
 

@@ -42,5 +42,12 @@ class Transportasi extends Model
         return $this->hasMany('App\Models\Transportasi');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+
+
     protected $table = 'transportasi';
 }
