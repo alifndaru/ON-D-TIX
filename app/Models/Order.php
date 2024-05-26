@@ -27,6 +27,12 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function paymentSeats()
+    {
+        return $this->hasMany(PaymentSeat::class, 'order_id');
+    }
+
+
     public function markAsCompleted()
     {
         $this->status = self::STATUS_COMPLETED;

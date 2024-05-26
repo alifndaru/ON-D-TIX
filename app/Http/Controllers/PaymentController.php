@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Xendit\BalanceAndTransaction\TransactionApi;
 use App\Models\Payment;
 use App\Models\Order;
+use App\Models\PaymentSeat;
 use App\Models\Seat;
 use Illuminate\Validation\ValidationException;
 
@@ -170,11 +171,15 @@ class PaymentController extends Controller
 
     public function detailTicket($order)
     {
-        $order = Order::where('order_id', $order)->with(['transportasi', 'rute'])->first();
+        // $pemesanan = Pemesanan::with('rute', 'penumpang')->orderBy('created_at', 'desc')->get();
+
+        $kursi = PaymentSeat::where('order_id', $order)->get();
+        $order = Order::where('order_id', $order)->with(['transportasi', 'rute', 'paymentSeats'])->first();
+        // dd($order);
         if (!$order) {
             return redirect()->route('history')->with('error', 'Order not found');
         }
 
-        return view('client.detail-ticket', compact('order'));
+        return view('client.detail-ticket', compact('order', 'kursi'));
     }
 }
