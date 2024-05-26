@@ -66,10 +66,6 @@
                 <p>Transportasi : {{ $order->transportasi->category->name }}</p>
                 <p>Nama Kendaraan : {{ $order->transportasi->name }}</p>
                 <p>Kelas : {{ $order->transportasi->kelas->name }}</p>
-                {{-- @foreach ($order->paymentSeats as $seat)
-                    <p>No Kursi : {{ $seat->seat_id }} </p>
-                @endforeach --}}
-
                 @foreach ($kursi as $item)
                     <p>No Kursi :{{ $item->seat_id }}</p>
                 @endforeach

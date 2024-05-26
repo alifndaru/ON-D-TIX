@@ -66,6 +66,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="tanggal_keberangkatan">Tanggal Keberangkatan:</label>
+                            <input type="date" id="tanggal_keberangkatan" name="tanggal_keberangkatan" class="form-control" required>
+                        </div>
 
                         <button type="submit" class="btn btn-primary btn-user btn-block" style="font-size: 16px">
                             Cari Tiket
