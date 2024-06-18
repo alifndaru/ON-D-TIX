@@ -2,7 +2,7 @@
 
 ## Apa itu Ticket?
 
-Web Ticket yang dibuat oleh <a href="https://github.com/adhiariyadi"> Adhi Ariyadi </a>. **Ticket adalah Website untuk pemesanan ticket dengan mudah melalui website.**
+Web Ticket yang dibuat oleh kami**Ticket adalah Website untuk pemesanan ticket dengan mudah melalui website.**
 
 ## Fitur apa saja yang tersedia di Ticket?
 
