@@ -14,14 +14,6 @@ Web Ticket yang dibuat oleh kami**Ticket adalah Website untuk pemesanan ticket d
 -   Pemesanan Ticket
 -   Dan lain-lain
 
-## Release Date
-
-**Release date : 28 Apr 2020**
-
-> Ticket merupakan project open source yang dibuat oleh Adhi Ariyadi. Kalian dapat download/fork/clone. Cukup beri stars di project ini agar memberiku semangat. Terima kasih!
-
----
-
 ## Default Account for testing
 
 **Admin Default Account**
