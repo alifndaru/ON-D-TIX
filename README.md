@@ -55,18 +55,3 @@ php artisan migrate --seed
 ```bash
 php artisan serve
 ```
-
-## Author
-
--   Facebook : <a href="https://web.facebook.com/adhiariyadi.me/"> Adhi Ariyadi</a>
--   LinkedIn : <a href="https://www.linkedin.com/in/adhiariyadi/"> Adhi Ariyadi</a>
-
-## Contributing
-
-Contributions, issues and feature requests di persilahkan.
-Jangan ragu untuk memeriksa halaman masalah jika Anda ingin berkontribusi. **Berhubung Project ini saya sudah selesaikan sendiri, namun banyak fitur yang kalian dapat tambahkan silahkan berkontribusi yaa!**
-
-## License
-
--   Copyright © 2020 Adhi Ariyadi.
--   **Ticket is open-sourced software licensed under the MIT license.**
