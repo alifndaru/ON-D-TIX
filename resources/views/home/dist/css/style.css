@@ -344,6 +344,21 @@ header .hero h1{
   align-items: center;
   font-size: 15px;
 }
+.card {
+  width: 200px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  
+}
+section.card-menu {
+  display: flex;
+  flex-direction: row;
+  margin-left: 200px;
+  margin-right: 200px;
+  justify-content: center;
+}
 }
 
     
