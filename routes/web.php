@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Auth::routes();
 
+Route::get('/', [App\Http\Controllers\HomepageController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::get('/pengaturan', [App\Http\Controllers\UserController::class, 'create'])->name('pengaturan');
     Route::post('/edit/name', [App\Http\Controllers\UserController::class, 'name'])->name('edit.name');
@@ -42,7 +44,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['penumpang'])->group(function () {
-        Route::get('/', [App\Http\Controllers\HomepageController::class, 'index'])->name('home');
         Route::get('/detail/{order_id}', [App\Http\Controllers\PaymentController::class, 'detailTicket'])->name('detailTicket');
         Route::post('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
         Route::get('/pilih-kursi/{id}', [App\Http\Controllers\HomepageController::class, 'kursi'])->name('pilih-kursi');

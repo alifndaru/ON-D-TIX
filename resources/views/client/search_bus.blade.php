@@ -41,44 +41,64 @@
             right: 1px;
             width: 20px;
         }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
     </style>
 
-
 @section('content')
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div>
-                <a href="/" class="text-white btn"><i class="fas fa-arrow-left mr-2"></i> Kembali</a>
-            </div>
-            <div class="card shadow">
-                <div class="card-header">Cari Tiket</div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('search') }}" class="user">
-                        @csrf
-                        <div class="form-group">
-                            <label for="tujuan">Tujuan</label>
-                            <select class="form-control" id="tujuan" name="tujuan" required>
-                                @foreach ($terminals as $terminal)
-                                <optgroup label="{{ $terminal->province }}">
-                                    <option value="{{ $terminal->name }}">{{ $terminal->name }}</option>
-                                </optgroup>
-                                @endforeach
-                            </select>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <a href="/" class="btn btn-light"><i class="fas fa-arrow-left mr-2"></i> Kembali</a>
+                </div>
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">Cari Tiket</div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('search') }}" class="user">
+                            @csrf
                             <div class="form-group">
-                                <label for="tanggal_keberangkatan">Tanggal Keberangkatan:</label>
-                                <input type="date" id="tanggal_keberangkatan" name="tanggal_keberangkatan" class="form-control" required>
+                                <label for="tujuan">Tujuan</label>
+                                <select class="form-control" id="tujuan" name="tujuan" required>
+                                    @foreach ($terminals as $terminal)
+                                        <optgroup label="{{ $terminal->province }}">
+                                            <option value="{{ $terminal->name }}">{{ $terminal->name }}</option>
+                                        </optgroup>
+                                    @endforeach
+                                </select>
+                                <div class="form-group mt-3">
+                                    <label for="tanggal_keberangkatan">Tanggal Keberangkatan:</label>
+                                    <input type="date" id="tanggal_keberangkatan" name="tanggal_keberangkatan"
+                                        class="form-control" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="submit" class="btn btn-primary btn-user btn-block" style="font-size: 16px">
-                            Cari Tiket
-                        </button>
-                    </form>
+                            <button type="submit" class="btn btn-primary btn-user btn-block" style="font-size: 16px">
+                                Cari Tiket
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+
 @section('script')
     <script src="{{ asset('vendor/select2/dist/js/select2.full.min.js') }}"></script>
     <script>

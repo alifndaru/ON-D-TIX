@@ -20,7 +20,7 @@ class HomepageController extends Controller
     public function index()
     {
         $category = Category::all();
-        return view("client.index", compact("category"));
+        return view("client.index-beranda", compact("category"));
     }
 
     public function create()

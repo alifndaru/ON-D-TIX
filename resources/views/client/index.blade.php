@@ -1,8 +1,10 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 @section('title', 'Home')
 @section('styles')
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 
     <style>
         .card {
@@ -31,6 +33,25 @@
 
 @endsection
 @section('content')
+
+    <!--about-->
+    <section class="about">
+        <div class="container">
+            <div class="box-about">
+                <div class="box">
+                    <h1>About</h1>
+                    <p>
+                        makan
+                    </p>
+                </div>
+                <div class="box">
+                    <img src="{{ asset('img/logo.png') }}" alt="" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--about-->
+
     <div class="row justify-content-center">
         @foreach ($category as $item)
             <div class="col-md-4">
@@ -44,9 +65,45 @@
             </div>
         @endforeach
     </div>
+
+
+
+
+    <section class="destination">
+        <div class="judul-destinasi">
+            <h1>Temukan Tujuan Stasiun dan Terminal Anda</h1>
+        </div>
+        <div class="card-container">
+            <a href="#">
+                <div class="card-destinasi">
+                    <img src="{{ asset('img/bandung.jpg') }}" alt="" />
+                    <h2>Jawa Barat</h2>
+                    <p>99 Stasiun</p>
+                    <p>99 Terminal</p>
+                </div>
+            </a>
+            <a href="#">
+                <div class="card-destinasi">
+                    <img src="{{ asset('img/semarang.jpg') }}" alt="" />
+                    <h2>Jawa Tengah</h2>
+                    <p>99 Stasiun</p>
+                    <p>99 Terminal</p>
+                </div>
+            </a>
+            <a href="#">
+                <div class="card-destinasi">
+                    <img src="{{ asset('img/surabaya.jpg') }}" alt="" />
+                    <h2>Jawa Timur</h2>
+                    <p>99 Stasiun</p>
+                    <p>99 Terminal</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
 @endsection
 @section('scripts')
     <script>
         // Your custom scripts if needed
     </script>
-@endsection
+@endsection --}}
