@@ -40,7 +40,7 @@ class HomepageController extends Controller
             abort(404);
         }
 
-        if ($category->name == 'KERETA API') {
+        if ($category->name == 'KERETA') {
             $response = Http::post('https://booking.kai.id/api/stations2');
             $stations = $response->json();
             $stations = collect($stations)->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
