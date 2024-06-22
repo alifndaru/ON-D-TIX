@@ -69,7 +69,7 @@
                 @foreach ($kursi as $item)
                     <p>No Kursi :{{ $item->seat_id }}</p>
                 @endforeach
-                <p>harga : 90000000</p>
+                <p>harga : {{ $order->total }}</p>
                 <hr>
             </div>
 
