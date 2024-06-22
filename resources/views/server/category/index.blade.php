@@ -65,6 +65,8 @@
                     <div class="modal-body">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
+                            <i>*penamaan kereta harus berupa kereta jangan yang lain seperti kereta-api/kereta api</i><br>
+                            <br>
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name" name="name"
                                 placeholder="Name Category" required />

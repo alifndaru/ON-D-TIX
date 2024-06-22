@@ -49,10 +49,11 @@ class RuteController extends Controller
 
 
         $busCategoryId = Category::where('name', 'BUS')->value('id');
-        $keretaCategoryId = Category::where('name', 'KERETA API')->value('id');
+        $keretaCategoryId = Category::where('name', 'KERETA')->value('id');
 
         $transportasiKereta = Transportasi::where('category_id', $keretaCategoryId)->orderBy('kode')->orderBy('name')->get();
         $transportasiBus = Transportasi::where('category_id', $busCategoryId)->orderBy('kode')->orderBy('name')->get();
+        // dd($transportasiKereta);
 
 
         // $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
