@@ -15,6 +15,11 @@ class PaymentSeat extends Model
         'seat_id'
     ];
 
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'payment_id', 'id');
+    }
+
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');

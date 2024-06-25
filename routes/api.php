@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::resource('/terminal', App\Http\Controllers\Api\TerminalController::class);
-Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
-Route::post('/payment/webhook/xendit', [App\Http\Controllers\PaymentController::class, 'webhook'])->name('payment.webhook');
-Route::get('all-transactions', [App\Http\Controllers\PaymentController::class, 'getAllTransactions']);
-
+Route::post('payment', [PaymentController::class, 'create'])->name('payment.create');
+Route::post('payment/webhook/xendit', [PaymentController::class, 'webhook'])->name('payment.webhook');
+Route::get('all-transactions', [PaymentController::class, 'getAllTransactions']);

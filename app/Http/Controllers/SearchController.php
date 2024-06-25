@@ -42,7 +42,7 @@ class SearchController extends Controller
         }
 
         $rutes = Rute::where('tujuan', $tujuan)
-            ->whereDate('tanggal_keberangkatan', '>=', $tanggal_keberangkatan)
+            ->whereDate('tanggal_keberangkatan', '=', $tanggal_keberangkatan)
             ->get();
 
         if ($rutes->isEmpty()) {

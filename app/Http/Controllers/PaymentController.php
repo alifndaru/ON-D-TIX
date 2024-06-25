@@ -13,7 +13,10 @@ use App\Models\Payment;
 use App\Models\Order;
 use App\Models\PaymentSeat;
 use App\Models\Seat;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Xendit\XenditSdkException;
 
 class PaymentController extends Controller
 {
@@ -21,84 +24,102 @@ class PaymentController extends Controller
     {
         Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
     }
+
     public function create(Request $request)
     {
+        $validatedData = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'amount' => 'required|numeric',
+            'rute_id' => 'required|exists:rute,id',
+            'transportasi_id' => 'required|exists:transportasi,id',
+            'order_id' => 'required',
+            'seat' => 'required|array'
+        ]);
+
+        if ($validatedData->fails()) {
+            return response()->json(['message' => $validatedData->errors()->first()], 400);
+        }
+
         $params = [
             'external_id' => (string) Str::uuid(),
-            'amount' => $request->input('amount'),
-            'order_id' => $request->input('order_id'),
-            'payer_email' => $request->input('payer_email'),
+            'amount' => $request->amount,
+            'order_id' => $request->order_id,
+            'payer_email' => $request->payer_email,
             'description' => 'Payment for order',
-            'user_id' => $request->input('user_id', Auth::id()),
+            'user_id' => $request->user_id,
             'checkout_url' => 'test.com',
-            'seat' => $request->input('seat'),
-            'transportasi_id' => $request->input('transportasi_id'),
-            'rute_id' => $request->input('rute_id'),
+            'seat' => $request->seat,
+            'transportasi_id' => $request->transportasi_id,
+            'rute_id' => $request->rute_id
         ];
-        // foreach ($params['seat'] as $seat_id) {
-        //     $seat = Seat::find($seat_id);
-        //     if ($seat->is_booked) {
-        //         return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
-        //     }
-        // }
+
+        foreach ($params['seat'] as $seat_id) {
+            $seat = PaymentSeat::find($seat_id);
+            // dd($seat);
+
+            if ($seat->is_booked) {
+                return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
+            }
+        }
+
         $apiInstance = new InvoiceApi();
         $createInvoiceRequest = new CreateInvoiceRequest([
             'external_id' => $params['external_id'],
             'amount' => $params['amount'],
             'description' => $params['description'],
             'payer_email' => $params['payer_email'],
+            'currency' => 'IDR',
+            'invoice_duration' => 172800
         ]);
 
-        $result = $apiInstance->createInvoice($createInvoiceRequest);
+        try {
+            $result = $apiInstance->createInvoice($createInvoiceRequest);
+        } catch (XenditSdkException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
 
-        $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'amount' => 'required|numeric',
-            'rute_id' => 'required|exists:rute,id',
-            'transportasi_id' => 'required|exists:transportasi,id',
-        ]);
         $order = Order::create([
             'order_id' => $params['order_id'],
-            'user_id' => $validatedData['user_id'],
-            'total' => $validatedData['amount'],
+            'user_id' => $request->user_id,
+            'total' => $request->amount,
             'status' => Order::STATUS_PENDING,
-            'rute_id' => $validatedData['rute_id'],
-            'transportasi_id' => $validatedData['transportasi_id'],
+            'rute_id' => $request->rute_id,
+            'transportasi_id' => $request->transportasi_id,
         ]);
-        // dd($order);
-
 
         if (!$order) {
             throw ValidationException::withMessages(['message' => 'Failed to create order']);
         }
 
-
         $payment = new Payment;
         $payment->status = 'pending';
-        // $payment->order_id = $params['order_id'];
         $payment->order_id = $order->order_id;
         $payment->user_id = $params['user_id'];
         $payment->external_id = $params['external_id'];
         $payment->checkout_url = $result['invoice_url'];
         $payment->transportasi_id = $params['transportasi_id'];
         $payment->rute_id = $params['rute_id'];
-
-        // dd($payment);
-
         $payment->save();
 
+
+        // $checkoutUrl = $payment->checkout_url;
+        // dd($checkoutUrl);
+
+        // dd($params);
 
         foreach ($params['seat'] as $seat_id) {
             $payment->seats()->attach($seat_id, ['order_id' => $order->order_id]);
         }
-        // if ($payment->status == 'settled') {
-        //     $order->status = Order::STATUS_COMPLETED;
-        //     $order->save();
-        //     return redirect()->route('history');
-        // }
 
+        if ($payment->status == 'settled') {
+            $order->status = Order::STATUS_COMPLETED;
+            $order->save();
+            return redirect()->route('history');
+        }
 
-        return redirect($result['invoice_url']);
+        // return response()->json(['message' => 'Payment created successfully', 'checkout_url' => $result['invoice_url']]);
+        // return redirect()->($result['invoice_url']);
+        return redirect()->away($result['invoice_url']);
     }
 
     public function webhook(Request $request)
@@ -145,26 +166,15 @@ class PaymentController extends Controller
     }
 
 
-
-    // public function history()
-    // {
-    //     $user = Auth::user(); // Mendapatkan user yang sedang login
-
-    //     // Mendapatkan riwayat pesanan untuk user yang sedang login
-    //     $history = $user->orders()->with(['transportasi', 'rute'])->get();
-
-    //     return view('client.history', compact('history'));
-    // }
-
     public function history()
     {
         $user = Auth::user(); // Mendapatkan user yang sedang login
 
         // Mendapatkan riwayat pesanan yang 'completed' untuk user yang sedang login
-        $completedOrders = $user->orders()->where('status', 'completed')->with(['transportasi', 'rute'])->get();
+        $completedOrders = $user->orders()->where('status', 'completed')->with(['transportasi', 'rute'])->orderBy('created_at', 'desc')->get();
 
         // Mendapatkan riwayat pesanan yang 'pending' untuk user yang sedang login
-        $pendingOrders = $user->orders()->where('status', 'pending')->with(['transportasi', 'rute'])->get();
+        $pendingOrders = $user->orders()->where('status', 'pending')->with(['transportasi', 'rute'])->orderBy('created_at', 'desc')->get();
 
         return view('client.history', compact('completedOrders', 'pendingOrders'));
     }

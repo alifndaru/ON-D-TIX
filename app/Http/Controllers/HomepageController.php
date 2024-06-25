@@ -58,7 +58,6 @@ class HomepageController extends Controller
 
     public function kursi($id)
     {
-
         $rute = Rute::find($id);
         $transportasi = Transportasi::find($rute->transportasi_id);
         $seats = Seat::where('transportasi_id', $rute->transportasi_id)->get();

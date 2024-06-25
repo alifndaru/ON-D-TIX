@@ -30,8 +30,17 @@ class Transportasi extends Model
     public function kursi($id)
     {
         $data = json_decode($id, true);
-        $kursi = Pemesanan::where('rute_id', $data['rute'])->where('waktu', $data['waktu'])->where('kursi', $data['kursi'])->count();
-        if ($kursi > 0) {
+        // dd($data);
+        $kursi = PaymentSeat::whereHas('payment', function ($query) use ($data) {
+            // $query->where('rute_id', $data['rute'])->where('jam', $data['jam'], 'tanggal_keberangkatan', $data['tanggal_keberangkatan']);
+            $query->where('rute_id', $data['rute']);
+        })->where('seat_id', $data['kursi'])->exists();
+
+        // dd($kursi);
+
+
+        // $kursi = Pemesanan::where('rute_id', $data['rute'])->where('waktu', $data['waktu'])->where('kursi', $data['kursi'])->exists();
+        if (!$kursi) {
             return null;
         } else {
             return $id;
