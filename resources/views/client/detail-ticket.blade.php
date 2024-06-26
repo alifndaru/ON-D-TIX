@@ -47,9 +47,9 @@
             <hr>
             {{-- @dd($order) --}}
             <div class="rute">
-                <h4>Jakarta</h4>
+                <h4>{{ $order->rute->start }}</h4>
                 <hr>
-                <h4>Bandung</h4>
+                <h4>{{ $order->rute->end }}</h4>
             </div>
 
             <div class="informasi-pemesanan">
