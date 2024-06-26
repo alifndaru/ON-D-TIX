@@ -29,6 +29,7 @@
                                     <tr>
                                         <th>Order ID</th>
                                         <th>User ID</th>
+                                        <th>Transportasi</th>
                                         <th>Status</th>
                                         <th>Total</th>
                                         <th>Created At</th>
@@ -40,11 +41,13 @@
                                         <tr>
                                             <td>{{ $order->id }}</td>
                                             <td>{{ $order->user_id }}</td>
+                                            <td>{{ $order->transportasi->name }}</td>
                                             <td>{{ $order->status }}</td>
                                             <td>{{ $order->total }}</td>
                                             <td>{{ $order->created_at }}</td>
                                             <th>
-                                                <a href="{{ route('detailTicket', ['order_id' => $order->order_id]) }}" class="btn btn-primary">Detail</a>
+                                                <a href="{{ route('detailTicket', ['order_id' => $order->order_id]) }}"
+                                                    class="btn btn-primary">Detail</a>
                                             </th>
                                         </tr>
                                     @endforeach
