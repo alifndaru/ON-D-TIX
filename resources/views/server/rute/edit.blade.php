@@ -74,7 +74,8 @@
                                 @foreach ($cityStations as $station)
                                     <option value="{{ $station['name'] }}"
                                         {{ $rute->start == $station['name'] ? 'selected' : '' }}>
-                                        {{ $station['name'] }} - {{ $station['code'] }}
+                                        {{-- {{ $station['name'] }} - {{ $station['code'] }} --}}
+                                        {{ $station['name'] }}{{ $station['code'] ? ' - ' . $station['code'] : '' }}
                                     </option>
                                 @endforeach
                             </optgroup>
@@ -89,7 +90,8 @@
                                 @foreach ($cityStations as $station)
                                     <option value="{{ $station['name'] }}"
                                         {{ $rute->end == $station['name'] ? 'selected' : '' }}>
-                                        {{ $station['name'] }} - {{ $station['code'] }}
+                                        {{-- {{ $station['name'] }} - {{ $station['code'] }} --}}
+                                        {{ $station['name'] }}{{ $station['code'] ? ' - ' . $station['code'] : '' }}
                                     </option>
                                 @endforeach
                             </optgroup>
@@ -108,12 +110,13 @@
                 </div>
                 <div class="form-group">
                     <label for="tanggal_keberangkatan">Tanggal Keberangkatan</label>
-                    <input type="date" class="form-control" id="tanggal_keberangkatan" name="tanggal_keberangkatan" value="{{ $rute->tanggal_keberangkatan }} required />
+                    <input type="date" class="form-control" id="tanggal_keberangkatan" name="tanggal_keberangkatan"
+                        value="{{ $rute->tanggal_keberangkatan }} required />
                 </div>
                 <div class="form-group">
                     <label for="category_id">Category</label>
                     <select class="form-control" id="category_id" name="category_id" required>
-                        @foreach($categories as $category)
+                        @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>

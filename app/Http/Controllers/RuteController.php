@@ -115,17 +115,47 @@ class RuteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // public function edit($id)
+    // {
+    //     $rute = Rute::find($id);
+    //     $response = Http::post('https://booking.kai.id/api/stations2');
+    //     $stations = $response->json();
+    //     $stations = collect($stations)->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
+    //         return $cityStations->sortBy('name');
+    //     })->sortKeys();
+    //     $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
+    //     $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
+    //     $categories = Category::all();
+    //     return view('server.rute.edit', compact('rute', 'transportasi', 'stations', 'categories'));
+    // }
+
     public function edit($id)
     {
         $rute = Rute::find($id);
-        $response = Http::post('https://booking.kai.id/api/stations2');
-        $stations = $response->json();
-        $stations = collect($stations)->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
-            return $cityStations->sortBy('name');
-        })->sortKeys();
-        $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
-        $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
         $categories = Category::all();
+        $terminal = Terminal::all();
+        $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
+
+        $categoryName = $rute->category->name;
+
+
+        // Asumsi 'category' adalah kolom pada model Rute yang menentukan jenis transportasi
+        if ($categoryName == 'KERETA') {
+            $response = Http::post('https://booking.kai.id/api/stations2');
+            $stations = collect($response->json())->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
+                return $cityStations->sortBy('name');
+            })->sortKeys();
+        } else if ($categoryName == 'BUS') {
+
+            $response = Terminal::all();
+            $stations = $response->sortBy('name')->groupBy('cityname')->each(function ($cityStations) {
+                return $cityStations->sortBy('name');
+            })->sortKeys();
+        } else {
+            // Jika kategori tidak dikenali, set stations menjadi koleksi kosong
+            $stations = collect([]);
+        }
+
         return view('server.rute.edit', compact('rute', 'transportasi', 'stations', 'categories'));
     }
 
