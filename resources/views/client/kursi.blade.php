@@ -27,7 +27,7 @@
                                     onclick="toggleSeatSelection('{{ $i }}', '{{ $cekData }}', '{{ $disabled }}')"
                                     data-seat="{{ $i }}">
                                     <h4 class="font-weight-bold text-dark mb-0">
-                                        {{ $i }} = {{ (int) $disabled }}
+                                        {{ $i }}
                                     </h4>
                                     @if ($selected)
                                         <i class="fas fa-check text-success mt-2"></i>
