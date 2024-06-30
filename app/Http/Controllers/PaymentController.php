@@ -165,6 +165,18 @@ class PaymentController extends Controller
         }
     }
 
+    public function checkPaymentStatus(Request $request)
+    {
+        $externalId = $request->session()->get('external_id'); // Atau dapatkan dari database
+        $payment = Payment::where('external_id', $externalId)->first();
+
+        if ($payment && $payment->status === 'settled') {
+            return redirect()->route('history')->with('success', 'Pembayaran berhasil!');
+        }
+
+        return back()->with('error', 'Pembayaran belum berhasil. Silakan cek kembali.');
+    }
+
 
     public function history()
     {

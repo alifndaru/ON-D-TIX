@@ -39,7 +39,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/transaksi', [App\Http\Controllers\LaporanController::class, 'index'])->name('transaksi');
             Route::resource('/kelas', App\Http\Controllers\KelasController::class);
             Route::get('/create-rute', [App\Http\Controllers\RuteController::class, 'create'])->name('create-rute');
-
         });
     });
 
@@ -52,9 +51,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cari/kursi/{data}', [App\Http\Controllers\PemesananController::class, 'edit'])->name('cari.kursi');
         Route::get('/kategori/{slug}', [App\Http\Controllers\HomepageController::class, 'show'])->name('category.show');
         Route::get('checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
+        Route::get('/check-payment-status', [App\Http\Controllers\PaymentController::class, 'checkPaymentStatus'])->name('checkPaymentStatus');
     });
 });
-
-
-
-
