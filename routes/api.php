@@ -24,4 +24,3 @@ Route::resource('/terminal', App\Http\Controllers\Api\TerminalController::class)
 Route::post('payment', [PaymentController::class, 'create'])->name('payment.create');
 Route::post('payment/webhook/xendit', [PaymentController::class, 'webhook'])->name('payment.webhook');
 Route::get('all-transactions', [PaymentController::class, 'getAllTransactions']);
-Route::get('/check-payment-status', [App\Http\Controllers\PaymentController::class, 'checkPaymentStatus'])->name('checkPaymentStatus');

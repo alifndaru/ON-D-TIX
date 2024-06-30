@@ -51,5 +51,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cari/kursi/{data}', [App\Http\Controllers\PemesananController::class, 'edit'])->name('cari.kursi');
         Route::get('/kategori/{slug}', [App\Http\Controllers\HomepageController::class, 'show'])->name('category.show');
         Route::get('checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
+        Route::get('/check-payment-status', [App\Http\Controllers\PaymentController::class, 'checkPaymentStatus'])->name('checkPaymentStatus');
     });
 });
