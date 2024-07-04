@@ -28,7 +28,7 @@
                                 <thead>
                                     <tr>
                                         <th>Order ID</th>
-                                        <th>User ID</th>
+                                        <th>Username</th>
                                         <th>Transportasi</th>
                                         <th>Status</th>
                                         <th>Total</th>
@@ -40,7 +40,7 @@
                                     @foreach ($completedOrders as $order)
                                         <tr>
                                             <td>{{ $order->id }}</td>
-                                            <td>{{ $order->user_id }}</td>
+                                            <td>{{ $order->user->name }}</td>
                                             <td>{{ $order->transportasi->name }}</td>
                                             <td>{{ $order->status }}</td>
                                             <td>{{ $order->total }}</td>
