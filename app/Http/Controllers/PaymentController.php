@@ -69,6 +69,7 @@ class PaymentController extends Controller
             'description' => $params['description'],
             'payer_email' => $params['payer_email'],
             'currency' => 'IDR',
+            'success_redirect_url' => route('history'),
             'invoice_duration' => 172800
         ]);
 
@@ -164,19 +165,6 @@ class PaymentController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-
-    public function checkPaymentStatus(Request $request)
-    {
-        $externalId = $request->session()->get('external_id'); // Atau dapatkan dari database
-        $payment = Payment::where('external_id', $externalId)->first();
-
-        if ($payment && $payment->status === 'settled') {
-            return redirect()->route('history')->with('success', 'Pembayaran berhasil!');
-        }
-
-        return back()->with('error', 'Pembayaran belum berhasil. Silakan cek kembali.');
-    }
-
 
     public function history()
     {
