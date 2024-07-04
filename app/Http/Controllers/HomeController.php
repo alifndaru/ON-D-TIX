@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Pemesanan;
 use App\Models\Rute;
 use App\Models\Transportasi;
@@ -28,7 +29,7 @@ class HomeController extends Controller
     public function index()
     {
         $rute = Rute::count();
-        $pendapatan = Pemesanan::where('status', 'Sudah Bayar')->sum('total');
+        $pendapatan = Order::where('status', 'completed')->sum('total');
         $transportasi = Transportasi::count();
         $user = User::count();
         return view('server.home', compact('rute', 'pendapatan', 'transportasi', 'user'));

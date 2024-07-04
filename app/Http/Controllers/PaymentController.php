@@ -13,6 +13,7 @@ use App\Models\Payment;
 use App\Models\Order;
 use App\Models\PaymentSeat;
 use App\Models\Seat;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -191,5 +192,17 @@ class PaymentController extends Controller
         }
 
         return view('client.detail-ticket', compact('order', 'kursi'));
+    }
+
+
+    public function cetakDetail($order)
+    {
+        // $tiketHistory = Order::findOrfail($order);
+        $kursi = PaymentSeat::where('order_id', $order)->get();
+        $order = Order::where('order_id', $order)->with(['transportasi', 'rute', 'paymentSeats'])->first();
+
+        // dd($order);
+        $pdf = PDF::loadview('client.cetakDetailTiket', ['order' => $order], ['kursi' => $kursi]);
+        return $pdf->stream('tiket-pdf');
     }
 }

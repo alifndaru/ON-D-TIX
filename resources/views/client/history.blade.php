@@ -32,7 +32,7 @@
                                         <th>Transportasi</th>
                                         <th>Status</th>
                                         <th>Total</th>
-                                        <th>Created At</th>
+                                        <th>tanggal Berangkat</th>
                                         <th>Detail</th>
                                     </tr>
                                 </thead>
@@ -44,7 +44,7 @@
                                             <td>{{ $order->transportasi->name }}</td>
                                             <td>{{ $order->status }}</td>
                                             <td>{{ $order->total }}</td>
-                                            <td>{{ $order->created_at }}</td>
+                                            <td>{{ $order->rute->tanggal_keberangkatan }}</td>
                                             <th>
                                                 <a href="{{ route('detailTicket', ['order_id' => $order->order_id]) }}"
                                                     class="btn btn-primary">Detail</a>
@@ -66,7 +66,7 @@
                                         <th>User ID</th>
                                         <th>Status</th>
                                         <th>Total</th>
-                                        <th>Created At</th>
+                                        <th>tanggal Berangkat</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,7 +76,7 @@
                                             <td>{{ $order->user_id }}</td>
                                             <td>{{ $order->status }}</td>
                                             <td>{{ $order->total }}</td>
-                                            <td>{{ $order->created_at }}</td>
+                                            <td>{{ $order->rute->tanggal_keberangkatan }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

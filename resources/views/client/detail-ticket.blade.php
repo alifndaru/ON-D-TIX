@@ -79,7 +79,7 @@
                 </h3>
                 <h5 class="card-title">{!! DNS1D::getBarcodeHTML($order->order_id, 'C128', 2, 30) !!}</h5>
             </div>
-            <a href="#" class="btn btn-primary">Cetak</a>
+            <a href="{{ route('cetakTiket', ['order_id' => $order->order_id]) }}" class="btn btn-primary">Cetak</a>
         </div>
     </div>
 @endsection

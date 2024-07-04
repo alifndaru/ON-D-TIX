@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengaturan', [App\Http\Controllers\UserController::class, 'create'])->name('pengaturan');
     Route::post('/edit/name', [App\Http\Controllers\UserController::class, 'name'])->name('edit.name');
     Route::post('/edit/password', [App\Http\Controllers\UserController::class, 'password'])->name('edit.password');
-    Route::get('/transaksi/{kode}', [App\Http\Controllers\LaporanController::class, 'show'])->name('transaksi.show');
+    Route::get('/transaksi/{order_id}', [App\Http\Controllers\LaporanController::class, 'show'])->name('transaksi.show');
 
     Route::middleware(['petugas'])->group(function () {
         Route::get('/pembayaran/{id}', [App\Http\Controllers\LaporanController::class, 'pembayaran'])->name('pembayaran');
@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/transaksi', [App\Http\Controllers\LaporanController::class, 'index'])->name('transaksi');
             Route::resource('/kelas', App\Http\Controllers\KelasController::class);
             Route::get('/create-rute', [App\Http\Controllers\RuteController::class, 'create'])->name('create-rute');
+            Route::get('/detail/admin/{order_id}', [App\Http\Controllers\PaymentController::class, 'detailTicket'])->name('detailTicketAdmin');
         });
     });
 
@@ -50,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pesan/{kursi}/{data}', [App\Http\Controllers\PemesananController::class, 'pesan'])->name('pesan');
         Route::get('/cari/kursi/{data}', [App\Http\Controllers\PemesananController::class, 'edit'])->name('cari.kursi');
         Route::get('/kategori/{slug}', [App\Http\Controllers\HomepageController::class, 'show'])->name('category.show');
+        Route::get('cetak/{order_id}', [App\Http\Controllers\PaymentController::class, 'cetakDetail'])->name('cetakTiket');
         Route::get('checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
     });
 });
