@@ -42,6 +42,8 @@ class LoginController extends Controller
             return '/home';
         } else if (Auth::user()->level == 'Penumpang') {
             return '/';
+        } else if (Auth::user()->level == 'Petugas') {
+            return '/petugas'; // Tambahkan ini
         }
 
         // Default redirect URL
