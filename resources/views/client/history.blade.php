@@ -44,7 +44,7 @@
                                             <td>{{ $order->transportasi->name }}</td>
                                             <td>{{ $order->status }}</td>
                                             <td>{{ $order->total }}</td>
-                                            <td>{{ $order->rute->tanggal_keberangkatan }}</td>
+                                            <td>{{ $order->rute?->tanggal_keberangkatan }}</td>
                                             <th>
                                                 <a href="{{ route('detailTicket', ['order_id' => $order->order_id]) }}"
                                                     class="btn btn-primary">Detail</a>
