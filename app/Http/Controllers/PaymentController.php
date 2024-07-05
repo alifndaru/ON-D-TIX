@@ -55,15 +55,16 @@ class PaymentController extends Controller
         ];
 
         foreach ($params['seat'] as $seat_id) {
-            $seat = PaymentSeat::find($seat_id);
-            // dd($seat);
+            // $seat = PaymentSeat::find($seat_id);
 
-            // if ($seat->is_booked) {
-            //     return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
-            // }
+            $seatBooking = Seat::find($seat_id);
+            // dd($seatBooking);
 
-            if ($seat === null || $seat->is_booked) {
+            if ($seatBooking->is_booked) {
                 return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
+            } else {
+                $seatBooking->is_booked = true;
+                $seatBooking->save();
             }
         }
 
