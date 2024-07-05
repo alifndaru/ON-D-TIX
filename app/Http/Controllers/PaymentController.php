@@ -58,7 +58,11 @@ class PaymentController extends Controller
             $seat = PaymentSeat::find($seat_id);
             // dd($seat);
 
-            if ($seat->is_booked) {
+            // if ($seat->is_booked) {
+            //     return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
+            // }
+
+            if ($seat === null || $seat->is_booked) {
                 return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
             }
         }
