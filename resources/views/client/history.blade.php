@@ -76,7 +76,7 @@
                                             <td>{{ $order->user_id }}</td>
                                             <td>{{ $order->status }}</td>
                                             <td>{{ $order->total }}</td>
-                                            <td>{{ $order->rute->tanggal_keberangkatan }}</td>
+                                            <td>{{ optional($order->rute)->tanggal_keberangkatan }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
