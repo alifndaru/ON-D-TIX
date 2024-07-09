@@ -54,11 +54,24 @@ class PaymentController extends Controller
             'rute_id' => $request->rute_id
         ];
 
-        foreach ($params['seat'] as $seat_id) {
-            // $seat = PaymentSeat::find($seat_id);
+        // foreach ($params['seat'] as $seat_id) {
+        //     // $seat = PaymentSeat::find($seat_id);
 
-            $seatBooking = Seat::find($seat_id);
-            // dd($seatBooking);
+        //     $seatBooking = Seat::find($seat_id);
+        //     // dd($seatBooking);
+
+        //     if ($seatBooking->is_booked) {
+        //         return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
+        //     } else {
+        //         $seatBooking->is_booked = true;
+        //         $seatBooking->save();
+        //     }
+        // }
+
+        foreach ($params['seat'] as $seat_id) {
+            $seatBooking = Seat::where('id', $seat_id)
+                ->where('transportasi_id', $request->transportasi_id)
+                ->first();
 
             if ($seatBooking->is_booked) {
                 return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
@@ -107,12 +120,6 @@ class PaymentController extends Controller
         $payment->transportasi_id = $params['transportasi_id'];
         $payment->rute_id = $params['rute_id'];
         $payment->save();
-
-
-        // $checkoutUrl = $payment->checkout_url;
-        // dd($checkoutUrl);
-
-        // dd($params);
 
         foreach ($params['seat'] as $seat_id) {
             $payment->seats()->attach($seat_id, ['order_id' => $order->order_id]);
