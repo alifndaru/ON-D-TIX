@@ -58,8 +58,8 @@ class RuteController extends Controller
 
         // $transportasi = Transportasi::orderBy('kode')->orderBy('name')->get();
         $rute = Rute::with('transportasi.category')->orderBy('created_at', 'desc')->get();
-        $terminal = Terminal::all();
-        return view('server.rute.create', compact('category', 'stations', 'rute', 'terminal', 'transportasiBus', 'transportasiKereta'));
+        $terminalsGroupedByProvince = Terminal::all()->groupBy('province');
+        return view('server.rute.create', compact('category', 'stations', 'rute', 'terminalsGroupedByProvince', 'transportasiBus', 'transportasiKereta'));
     }
 
 

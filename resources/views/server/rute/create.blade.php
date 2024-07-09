@@ -30,29 +30,38 @@
                                         <div class="form-group">
                                             <label for="tujuan">Tujuan</label>
                                             <select class="form-control" id="tujuan" name="tujuan" required>
-                                                @foreach ($terminal as $item)
-                                                    <optgroup label="{{ $item->province }}">
-                                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                @foreach ($terminalsGroupedByProvince as $province => $terminals)
+                                                    <optgroup label="{{ $province }}">
+                                                        @foreach ($terminals as $terminal)
+                                                            <option value="{{ $terminal->name }}">{{ $terminal->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </optgroup>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="tujuan">Rute Awal</label>
-                                            <select class="form-control" id="start" name="start" required>
-                                                @foreach ($terminal as $item)
-                                                    <optgroup label="{{ $item->province }}">
-                                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                            <select class="form-control" id="tujuan" name="tujuan" required>
+                                                @foreach ($terminalsGroupedByProvince as $province => $terminals)
+                                                    <optgroup label="{{ $province }}">
+                                                        @foreach ($terminals as $terminal)
+                                                            <option value="{{ $terminal->name }}">{{ $terminal->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </optgroup>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="tujuan">Rute Akhir</label>
-                                            <select class="form-control" id="end" name="end" required>
-                                                @foreach ($terminal as $item)
-                                                    <optgroup label="{{ $item->province }}">
-                                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                            <select class="form-control" id="tujuan" name="tujuan" required>
+                                                @foreach ($terminalsGroupedByProvince as $province => $terminals)
+                                                    <optgroup label="{{ $province }}">
+                                                        @foreach ($terminals as $terminal)
+                                                            <option value="{{ $terminal->name }}">{{ $terminal->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </optgroup>
                                                 @endforeach
                                             </select>
