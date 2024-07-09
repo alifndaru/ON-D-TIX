@@ -38,10 +38,12 @@
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="ri-logout-box-fill"></i> Logout
+
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf</form>
                             </li>
+                            <li><a href="{{ route('history') }}"><i class="ri-calendar-fill"></i> History</a></li>
                         @else
                             <li><a href="{{ route('login') }}"><i class="ri-login-box-fill"></i> Login</a></li>
                         @endif
