@@ -48,8 +48,8 @@ class HomepageController extends Controller
             })->sortKeys();
             return view('client.search_kereta', ['stations' => $stations]);
         } else if ($category->name == 'BUS') {
-            $terminals = Terminal::all();
-            return view('client.search_bus', compact('terminals'));
+            $terminalsGroupedByProvince = Terminal::all()->groupBy('province');
+            return view('client.search_bus', compact('terminalsGroupedByProvince'));
         } else {
             echo 'tidak ada rute yang tersedia untuk kategori ini.';
         }

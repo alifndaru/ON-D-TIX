@@ -73,10 +73,20 @@
                             @csrf
                             <div class="form-group">
                                 <label for="tujuan">Tujuan</label>
-                                <select class="form-control" id="tujuan" name="tujuan" required>
+                                {{-- <select class="form-control" id="tujuan" name="tujuan" required>
                                     @foreach ($terminals as $terminal)
                                         <optgroup label="{{ $terminal->province }}">
                                             <option value="{{ $terminal->name }}">{{ $terminal->name }}</option>
+                                        </optgroup>
+                                    @endforeach
+                                </select> --}}
+
+                                <select class="form-control" id="tujuan" name="tujuan" required>
+                                    @foreach ($terminalsGroupedByProvince as $province => $terminals)
+                                        <optgroup label="{{ $province }}">
+                                            @foreach ($terminals as $terminal)
+                                                <option value="{{ $terminal->name }}">{{ $terminal->name }}</option>
+                                            @endforeach
                                         </optgroup>
                                     @endforeach
                                 </select>
