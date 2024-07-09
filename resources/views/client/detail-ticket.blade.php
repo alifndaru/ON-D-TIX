@@ -75,7 +75,7 @@
 
             <div class="barcode">
                 <h3>
-                    ini barcode
+                    Scan Here to Check In
                 </h3>
                 <h5 class="card-title">{!! DNS1D::getBarcodeHTML($order->order_id, 'C128', 2, 30) !!}</h5>
             </div>
