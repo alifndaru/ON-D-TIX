@@ -68,23 +68,6 @@ class PaymentController extends Controller
         //     }
         // }
 
-        foreach ($params['seat'] as $seat_id) {
-            $seatBooking = Seat::where('id', $seat_id)
-                ->where('transportasi_id', $request->transportasi_id)
-                ->first();
-
-            if (!$seatBooking) {
-                return response()->json(['message' => 'Seat not found for the given transportasi'], 400);
-            }
-
-            if ($seatBooking->is_booked) {
-                return response()->json(['message' => 'One or more of the selected seats are already booked'], 400);
-            } else {
-                $seatBooking->is_booked = true;
-                $seatBooking->save();
-            }
-        }
-
         $apiInstance = new InvoiceApi();
         $createInvoiceRequest = new CreateInvoiceRequest([
             'external_id' => $params['external_id'],
