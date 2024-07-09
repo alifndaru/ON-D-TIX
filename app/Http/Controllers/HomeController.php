@@ -32,6 +32,25 @@ class HomeController extends Controller
         $pendapatan = Order::where('status', 'completed')->sum('total');
         $transportasi = Transportasi::count();
         $user = User::count();
-        return view('server.home', compact('rute', 'pendapatan', 'transportasi', 'user'));
+
+
+        $pendapatanPerBulan = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total) as total')
+            ->where('status', 'completed')
+            ->groupBy('year', 'month')
+            ->orderByRaw('year ASC, month ASC')
+            ->get();
+
+        return view('server.home', compact('rute', 'pendapatan', 'transportasi', 'user', 'pendapatanPerBulan'));
+    }
+
+    public function getPendapatanData()
+    {
+        $pendapatanPerBulan = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total) as total')
+            ->where('status', 'completed')
+            ->groupBy('year', 'month')
+            ->orderByRaw('year ASC, month ASC')
+            ->get();
+
+        return response()->json($pendapatanPerBulan);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/kelas', App\Http\Controllers\KelasController::class);
             Route::get('/create-rute', [App\Http\Controllers\RuteController::class, 'create'])->name('create-rute');
             Route::get('/detail/admin/{order_id}', [App\Http\Controllers\PaymentController::class, 'detailTicket'])->name('detailTicketAdmin');
+            Route::get('/pendapatan-data', [HomeController::class, 'getPendapatanData']);
         });
     });
 
