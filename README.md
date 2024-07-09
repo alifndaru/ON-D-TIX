@@ -1,8 +1,8 @@
-<h1 align="center">Selamat datang di Ticket! 👋</h1>
+<h1 align="center">Selamat datang di ON-DTIX! 👋</h1>
 
-## Apa itu Ticket?
+## Apa itu ON-DTIX?
 
-Web Ticket yang dibuat oleh kami**Ticket adalah Website untuk pemesanan ticket dengan mudah melalui website.**
+Web ON-DTIX yang dibuat oleh kami\*\*ON-DTIX adalah Website untuk pemesanan Tiket transportasi dengan mudah melalui on.dtix.xyz
 
 ## Fitur apa saja yang tersedia di Ticket?
 
@@ -12,6 +12,8 @@ Web Ticket yang dibuat oleh kami**Ticket adalah Website untuk pemesanan ticket d
 -   Transportasi & CRUD
 -   Category & CRUD
 -   Pemesanan Ticket
+-   Payment Gateway
+-   Cetak Tiket
 -   Dan lain-lain
 
 ## Default Account for testing
@@ -28,7 +30,6 @@ Web Ticket yang dibuat oleh kami**Ticket adalah Website untuk pemesanan ticket d
 1. **Clone Repository**
 
 ```bash
-git clone https://github.com/adhiariyadi/Ticket-Laravel.git
 cd Ticket-Laravel
 composer install
 cp .env.example .env
