@@ -43,15 +43,6 @@ class HomeController extends Controller
 
         $categories = DB::table('category')->get();
 
-
-        // $ruteData = DB::table('payments')
-        //     ->join('rute', 'payments.rute_id', '=', 'rute.id')
-        //     ->where('payments.status', 'settled')
-        //     ->select('rute.tujuan', DB::raw('count(payments.rute_id) as total'))
-        //     ->groupBy('rute.tujuan')
-        //     ->orderBy('total', 'desc')
-        //     ->get();
-
         $ruteData = DB::table('payments')
             ->join('rute', 'payments.rute_id', '=', 'rute.id')
             ->join('category', 'rute.category_id', '=', 'category.id') // Menggabungkan tabel kategori
@@ -61,9 +52,15 @@ class HomeController extends Controller
             ->orderBy('total', 'desc')
             ->get();
 
+        $pembelianPerKategori = DB::table('payments')
+            ->join('rute', 'payments.rute_id', '=', 'rute.id')
+            ->join('category', 'rute.category_id', '=', 'category.id')
+            ->where('payments.status', 'settled')
+            ->select('category.name', DB::raw('count(*) as total'))
+            ->groupBy('category.name')
+            ->get();
 
-
-        return view('server.home', compact('rute', 'pendapatan', 'transportasi', 'user', 'pendapatanPerBulan', 'ruteData', 'categories'));
+        return view('server.home', compact('rute', 'pendapatan', 'transportasi', 'user', 'pendapatanPerBulan', 'ruteData', 'categories', 'pembelianPerKategori'));
     }
 
     public function getPendapatanData()

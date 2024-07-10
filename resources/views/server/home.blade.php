@@ -63,6 +63,7 @@
         </div>
     </div>
     <canvas id="pendapatanChart"></canvas>
+    <canvas id="pieChart" width="400" height="400"></canvas>
     <div class="row">
         <div class="col-12">
             <label for="categoryFilter">Pilih Kategori:</label>
@@ -180,6 +181,82 @@
             ruteChart.data.labels = filteredData.map(item => item.tujuan);
             ruteChart.data.datasets[0].data = filteredData.map(item => item.total);
             ruteChart.update();
+        });
+
+        // Pie Chart
+        // var ctx = document.getElementById('pieChart').getContext('2d');
+        // var pieChart = new Chart(ctx, {
+        //     type: 'pie',
+        //     data: {
+        //         labels: {!! $pembelianPerKategori->pluck('name')->toJson() !!},
+        //         datasets: [{
+        //             data: {!! $pembelianPerKategori->pluck('total')->toJson() !!},
+        //             backgroundColor: [
+        //                 'rgba(255, 99, 132, 0.2)',
+        //                 'rgba(54, 162, 235, 0.2)'
+        //             ],
+        //             borderColor: [
+        //                 'rgba(255, 99, 132, 1)',
+        //                 'rgba(54, 162, 235, 1)'
+        //             ],
+        //             borderWidth: 1
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         legend: {
+        //             position: 'top',
+        //         },
+        //         title: {
+        //             display: true,
+        //             text: 'Pembelian Berdasarkan Kategori'
+        //         }
+        //     }
+        // });
+
+        var ctx = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: {!! $pembelianPerKategori->pluck('name')->toJson() !!},
+                datasets: [{
+                    data: {!! $pembelianPerKategori->pluck('total')->toJson() !!},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        // Tambahkan lebih banyak warna jika ada lebih banyak kategori
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        // Tambahkan lebih banyak warna jika ada lebih banyak kategori
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Pembelian Berdasarkan Kategori'
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function(previousValue, currentValue) {
+                                return previousValue + currentValue;
+                            }, 0);
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                            return data.labels[tooltipItem.index] + ': ' + percentage + '%';
+                        }
+                    }
+                }
+            }
         });
     </script>
 @endsection
