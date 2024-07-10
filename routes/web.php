@@ -55,5 +55,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/kategori/{slug}', [App\Http\Controllers\HomepageController::class, 'show'])->name('category.show');
         Route::get('cetak/{order_id}', [App\Http\Controllers\PaymentController::class, 'cetakDetail'])->name('cetakTiket');
         Route::get('checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
+        Route::post('/payments/{orderId}/cancel', [App\Http\Controllers\PaymentController::class, 'cancelPayment'])->name('cencelled-payment');
     });
 });

@@ -176,7 +176,10 @@ class PaymentController extends Controller
         // Mendapatkan riwayat pesanan yang 'pending' untuk user yang sedang login
         $pendingOrders = $user->orders()->where('status', 'pending')->with(['transportasi', 'rute'])->orderBy('created_at', 'desc')->get();
 
-        return view('client.history', compact('completedOrders', 'pendingOrders'));
+        $cencelledOrders = $user->orders()->where('status', 'cancelled')->with(['transportasi', 'rute'])->orderBy('created_at', 'desc')->get();
+
+        $checkout_urls = Payment::where('status', 'pending')->where('user_id', $user->id)->pluck('checkout_url');
+        return view('client.history', compact('completedOrders', 'pendingOrders', 'cencelledOrders', 'checkout_urls'));
     }
 
     public function detailTicket($order)
@@ -203,5 +206,30 @@ class PaymentController extends Controller
         // dd($order);
         $pdf = PDF::loadview('client.cetakDetailTiket', ['order' => $order], ['kursi' => $kursi]);
         return $pdf->stream('tiket-pdf');
+    }
+
+    public function cancelPayment($orderId)
+    {
+        $order = Order::where('order_id', $orderId)->first();
+        if (!$order) {
+            return response()->json(['message' => 'Pembayaran tidak ditemukan'], 404);
+        }
+
+        // Misalkan relasi antara Order dan Payment adalah one-to-one dan dinamakan 'payment'
+        $payment = $order->payment;
+        if ($payment) {
+            $payment->status = 'cancelled';
+            $payment->save();
+
+            if ($payment->paymentSeat) {
+                $payment->paymentSeat->delete();
+            }
+        }
+
+        // Logika untuk membatalkan pembayaran pada order
+        $order->status = 'cancelled';
+        $order->save();
+
+        return redirect()->route('history')->with('success', 'Pembayaran berhasil dibatalkan');
     }
 }
