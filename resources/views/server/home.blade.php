@@ -2,36 +2,9 @@
 
 @section('title', 'Dashboard')
 @section('heading', 'Dashboard')
+<link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
 
-<style>
-    #pendapatanChart {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        border: 1px solid #eaeaea;
-        max-width: 100%;
-        height: auto;
-        margin: 40px;
-    }
 
-    .card {
-        border-radius: 8px;
-    }
-
-    .card .card-body {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .card .card-body .col-auto {
-        padding: 0;
-    }
-
-    .card .card-body .fas {
-        font-size: 2em;
-        color: #ccc;
-    }
-</style>
 
 @section('content')
     <div class="row">
@@ -90,9 +63,22 @@
         </div>
     </div>
     <canvas id="pendapatanChart"></canvas>
+    <div class="row">
+        <div class="col-12">
+            <label for="categoryFilter">Pilih Kategori:</label>
+            <select id="categoryFilter" class="form-control">
+                <option value="">Semua</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <canvas id="ruteChart"></canvas>
     <script>
+        // Pendapatan Chart
         fetch('/pendapatan-data')
             .then(response => response.json())
             .then(data => {
@@ -160,5 +146,40 @@
             ];
             return monthNames[monthNumber - 1];
         }
+
+        // Rute Chart
+        let ruteData = {!! json_encode($ruteData) !!};
+        const ctxRute = document.getElementById('ruteChart').getContext('2d');
+        const ruteChart = new Chart(ctxRute, {
+            type: 'bar',
+            data: {
+                labels: ruteData.map(item => item.tujuan),
+                datasets: [{
+                    label: 'Jumlah Pembelian',
+                    data: ruteData.map(item => item.total),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            const filteredData = selectedCategory ?
+                ruteData.filter(item => item.category === selectedCategory) :
+                ruteData;
+
+            ruteChart.data.labels = filteredData.map(item => item.tujuan);
+            ruteChart.data.datasets[0].data = filteredData.map(item => item.total);
+            ruteChart.update();
+        });
     </script>
 @endsection
