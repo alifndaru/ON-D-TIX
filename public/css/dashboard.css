@@ -61,6 +61,12 @@
     border-left: 4px solid var(--danger-color);
 }
 
+#pieChart{
+    width: 400px; /* Ukuran lebar pie chart */
+    height: 400px; /* Ukuran tinggi pie chart */
+    margin: 0 auto; /* Memposisikan pie chart di tengah */
+}
+
 @media (max-width: 768px) {
     .card .card-body {
         flex-direction: column;
